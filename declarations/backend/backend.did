@@ -1,0 +1,95 @@
+type UserRole = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type UserProfile = record {name: text;};
+type SiteConfig = 
+ record {
+   contactEmail: text;
+   language: text;
+   logoDisplayLocation: LogoDisplayLocation;
+   logoPath: text;
+   logoSize: nat;
+ };
+type LogoDisplayLocation = 
+ variant {
+   both;
+   footer;
+   header;
+ };
+type FileReference = 
+ record {
+   hash: text;
+   path: text;
+ };
+type ContactSubmission = 
+ record {
+   email: text;
+   id: text;
+   message: text;
+   name: text;
+   timestamp: int;
+ };
+type Artwork = 
+ record {
+   artistId: text;
+   description: text;
+   id: text;
+   isForSale: bool;
+   photo: text;
+   price: opt nat;
+   title: text;
+ };
+type Artist = 
+ record {
+   artworks: vec text;
+   bio: text;
+   id: text;
+   name: text;
+   photo: text;
+ };
+type Apartment = 
+ record {
+   address: text;
+   amenities: vec text;
+   city: text;
+   description: text;
+   id: text;
+   isActive: bool;
+   name: text;
+   photos: vec text;
+ };
+service : {
+  addApartment: (apartment: Apartment) -> ();
+  addArtist: (artist: Artist) -> ();
+  addArtwork: (artwork: Artwork) -> ();
+  assignCallerUserRole: (user: principal, role: UserRole) -> ();
+  dropFileReference: (path: text) -> ();
+  getApartment: (id: text) -> (opt Apartment) query;
+  getArtist: (id: text) -> (opt Artist) query;
+  getArtwork: (id: text) -> (opt Artwork) query;
+  getCallerUserProfile: () -> (opt UserProfile) query;
+  getCallerUserRole: () -> (UserRole) query;
+  getFileReference: (path: text) -> (FileReference) query;
+  getSiteConfig: () -> (SiteConfig) query;
+  getUserProfile: (user: principal) -> (opt UserProfile) query;
+  initializeAccessControl: () -> ();
+  isCallerAdmin: () -> (bool) query;
+  listApartments: () -> (vec Apartment) query;
+  listArtists: () -> (vec Artist) query;
+  listArtworks: () -> (vec Artwork) query;
+  listContactSubmissions: () -> (vec ContactSubmission) query;
+  listFileReferences: () -> (vec FileReference) query;
+  registerFileReference: (path: text, hash: text) -> ();
+  saveCallerUserProfile: (profile: UserProfile) -> ();
+  setLogoDisplayLocation: (location: LogoDisplayLocation) -> ();
+  setLogoSize: (size: nat) -> ();
+  submitContactForm: (name: text, email: text, message: text) -> ();
+  updateApartment: (apartment: Apartment) -> ();
+  updateArtist: (artist: Artist) -> ();
+  updateArtwork: (artwork: Artwork) -> ();
+  updateSiteConfig: (config: SiteConfig) -> ();
+  uploadLogo: (path: text) -> ();
+}

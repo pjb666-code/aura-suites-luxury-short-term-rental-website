@@ -281,10 +281,10 @@ export default function MediaAdmin() {
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="font-medium capitalize text-white">
+                    <h3 className="font-medium capitalize text-[#1a1d23]">
                       {section} Section
                     </h3>
-                    <p className="text-xs text-white/60">
+                    <p className="text-xs text-[#5a6378]">
                       {usingFallback
                         ? "Using fallback image"
                         : "Using custom uploaded image"}
@@ -423,8 +423,8 @@ export default function MediaAdmin() {
                 </div>
                 <CardContent className="space-y-3 p-4">
                   <div>
-                    <h3 className="font-medium text-white">{image.name}</h3>
-                    <p className="text-xs text-white/60">{image.category}</p>
+                    <h3 className="font-medium text-[#1a1d23]">{image.name}</h3>
+                    <p className="text-xs text-[#5a6378]">{image.category}</p>
                   </div>
 
                   {/* Set as Default Buttons */}

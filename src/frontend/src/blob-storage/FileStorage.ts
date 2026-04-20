@@ -2,7 +2,7 @@ import { loadConfig } from "@caffeineai/core-infrastructure";
 import { HttpAgent } from "@icp-sdk/core/agent";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { FileReference } from "../backend";
+import type { FileReference } from "../backend";
 import { useActor } from "../hooks/useActor";
 import { StorageClient } from "./StorageClient";
 
@@ -21,6 +21,18 @@ const getHttpAgent = async () => {
     });
   }
   return agent;
+};
+
+const buildStorageClient = async () => {
+  const envConfig = await loadConfig();
+  const agent = await getHttpAgent();
+  return new StorageClient(
+    envConfig.bucket_name,
+    envConfig.storage_gateway_url,
+    envConfig.backend_canister_id,
+    envConfig.project_id,
+    agent,
+  );
 };
 
 // Hook to fetch the list of files
@@ -43,24 +55,19 @@ export const useFileList = () => {
 export const useFileUrl = (path: string) => {
   const { actor } = useActor();
 
-  const getFileReference = async (path: string) => {
+  const getFileUrl = async (filePath: string): Promise<string> => {
     if (!actor) throw new Error("Backend is not available");
-    const envConfig = await loadConfig();
-    const storageClient = new StorageClient(
-      actor,
-      envConfig.bucket_name,
-      envConfig.storage_gateway_url,
-      envConfig.backend_canister_id,
-      envConfig.project_id,
-      await getHttpAgent(),
-    );
-    const url = await storageClient.getDirectURL(path);
-    return url;
+    const fileReference = await actor.getFileReference(filePath);
+    if (!fileReference) {
+      throw new Error(`File reference not found for path: ${filePath}`);
+    }
+    const storageClient = await buildStorageClient();
+    return storageClient.getDirectURL(fileReference.hash);
   };
 
   return useQuery({
     queryKey: ["fileUrl", path],
-    queryFn: () => getFileReference(path!),
+    queryFn: () => getFileUrl(path),
     enabled: !!path,
     staleTime: Number.POSITIVE_INFINITY,
     gcTime: 30 * 60 * 1000, // 30 minutes
@@ -85,22 +92,21 @@ export const useFileUpload = () => {
       throw new Error("Backend is not available");
     }
 
-    const envConfig = await loadConfig();
-    const storageClient = new StorageClient(
-      actor,
-      envConfig.bucket_name,
-      envConfig.storage_gateway_url,
-      envConfig.backend_canister_id,
-      envConfig.project_id,
-      await getHttpAgent(),
-    );
-
     setIsUploading(true);
 
     try {
-      const res = await storageClient.putFile(path, data, onProgress);
+      const storageClient = await buildStorageClient();
+      const blobBytes = new Uint8Array(await data.arrayBuffer());
+      const { hash } = await storageClient.putFile(blobBytes, onProgress);
+
+      // Register the file reference in the backend (path → hash mapping)
+      await actor.registerFileReference(path, hash);
+
       await invalidateFileList();
-      return res;
+
+      // Build a direct URL for immediate use
+      const url = storageClient.getDirectURL(hash);
+      return { path, hash, url };
     } finally {
       setIsUploading(false);
     }
@@ -148,3 +154,6 @@ export const useInvalidateQueries = () => {
     },
   };
 };
+
+// Re-export FileReference for convenience
+export type { FileReference };

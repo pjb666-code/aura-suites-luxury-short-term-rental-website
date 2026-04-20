@@ -1,0 +1,422 @@
+type _ImmutableObjectStorageRefillResult = 
+ record {
+   success: opt bool;
+   topped_up_amount: opt nat;
+ };
+type _ImmutableObjectStorageRefillInformation = record {
+                                                  proposed_top_up_amount:
+                                                   opt nat;};
+type _ImmutableObjectStorageCreateCertificateResult = 
+ record {
+   blob_hash: text;
+   method: text;
+ };
+type UserRole = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type UserProfile = record {name: text;};
+type Testimonial = 
+ record {
+   authorPhoto: opt blob;
+   date: text;
+   id: text;
+   name: text;
+   sortOrder: nat;
+   stars: nat;
+   "text": text;
+   visible: bool;
+ };
+type SocialLink = 
+ record {
+   platform: text;
+   url: text;
+ };
+type SiteConfig = 
+ record {
+   aboutSection: AboutSection;
+   accentColor: text;
+   apartmentDetailPageBackgroundColor: text;
+   apartmentsPageBackgroundColor: text;
+   apartmentsSection: ApartmentsSection;
+   artistDetailPageBackgroundColor: text;
+   artworkDetailPageBackgroundColor: text;
+   auraCollectionPageBackgroundColor: text;
+   auraCollectionSection: AuraCollectionSection;
+   bookingUrl: text;
+   contactEmail: text;
+   defaultAboutImage: text;
+   defaultApartmentImage: text;
+   defaultApartmentsImage: text;
+   defaultArtistImage: text;
+   defaultArtworkImage: text;
+   defaultCollectionImage: text;
+   defaultExperienceImage: text;
+   defaultHeroImage: text;
+   experiencePage: ExperiencePage;
+   footerSection: FooterSection;
+   headerTextColor: text;
+   heroSection: HeroSection;
+   landingPageBackgroundColor: text;
+   language: text;
+   logoDisplayLocation: LogoDisplayLocation;
+   logoPath: text;
+   logoPlaceholderPath: text;
+   logoSize: nat;
+   textColor: text;
+ };
+type SectionTexts = 
+ record {
+   discoverText: text;
+   featuredText: text;
+ };
+type MapMarker = 
+ record {
+   address: text;
+   category: text;
+   description: text;
+   id: text;
+   imageKey: opt text;
+   lat: float64;
+   lng: float64;
+   name: text;
+   sortOrder: nat;
+   visible: bool;
+   website: opt text;
+ };
+type LogoDisplayLocation = 
+ variant {
+   both;
+   footer;
+   header;
+ };
+type LegalPage = 
+ record {
+   backgroundColor: text;
+   content: text;
+   lastUpdated: int;
+   textColor: text;
+   title: text;
+ };
+type LayoutOption = 
+ variant {
+   centered;
+   gallery;
+   grid;
+   leftImage;
+   list;
+   simple;
+ };
+type Highlight = 
+ record {
+   description: text;
+   icon: text;
+   id: text;
+   isActive: bool;
+   title: text;
+ };
+type HeroSection = 
+ record {
+   backgroundColor: text;
+   backgroundImage: text;
+   layout: LayoutOption;
+   subtitle: text;
+   textColor: text;
+   title: text;
+ };
+type FooterSection = 
+ record {
+   backgroundColor: text;
+   contactInfo: text;
+   layout: LayoutOption;
+   socialLinks: vec text;
+   textColor: text;
+ };
+type FileReference = 
+ record {
+   hash: text;
+   path: text;
+ };
+type ExperienceSection = 
+ record {
+   animationType: text;
+   description: text;
+   id: text;
+   images: vec text;
+   isActive: bool;
+   layout: LayoutOption;
+   order: nat;
+   title: text;
+   videos: vec text;
+ };
+type ExperiencePage = 
+ record {
+   backgroundColor: text;
+   backgroundImage: text;
+   cardStyle: CardStyle;
+   description: text;
+   highlights: vec Highlight;
+   layout: LayoutOption;
+   sections: vec ExperienceSection;
+   textColor: text;
+   title: text;
+ };
+type ExclusiveService = 
+ record {
+   category: text;
+   description: text;
+   id: text;
+   imageKey: opt text;
+   name: text;
+   priceInfo: opt text;
+   requestLink: opt text;
+   sortOrder: nat;
+   visible: bool;
+ };
+type ContactSubmission = 
+ record {
+   email: text;
+   id: text;
+   message: text;
+   name: text;
+   timestamp: int;
+ };
+type ContactInfo = 
+ record {
+   address: text;
+   contactText: text;
+   email: text;
+   phone: text;
+   socialLinks: vec SocialLink;
+ };
+type CityGuideEntry = 
+ record {
+   category: text;
+   description: text;
+   externalLink: opt text;
+   id: text;
+   imageKey: opt text;
+   pdfKey: opt text;
+   sortOrder: nat;
+   title: text;
+   visible: bool;
+ };
+type CardStyle = 
+ variant {
+   classic;
+   minimal;
+   modern;
+ };
+type AuraCollectionSection = 
+ record {
+   auraCollectionMainImageKey: opt text;
+   backgroundColor: text;
+   backgroundImage: text;
+   contactInfo: ContactInfo;
+   description: text;
+   featuredArtists: vec text;
+   featuredArtworks: vec text;
+   layout: LayoutOption;
+   sectionTexts: SectionTexts;
+   showOnLandingPage: bool;
+   textColor: text;
+   title: text;
+ };
+type Artwork = 
+ record {
+   artistId: text;
+   description: text;
+   galleryImages: vec text;
+   id: text;
+   isForSale: bool;
+   photo: text;
+   price: opt nat;
+   title: text;
+ };
+type Artist = 
+ record {
+   artworks: vec text;
+   bio: text;
+   galleryImages: vec text;
+   id: text;
+   name: text;
+   photo: text;
+ };
+type ApartmentsSection = 
+ record {
+   backgroundColor: text;
+   backgroundImage: text;
+   description: text;
+   layout: LayoutOption;
+   textColor: text;
+   title: text;
+ };
+type Apartment = 
+ record {
+   address: text;
+   amenities: vec text;
+   bookingUrl: text;
+   city: text;
+   description: text;
+   id: text;
+   isActive: bool;
+   name: text;
+   photos: vec text;
+ };
+type AboutSection = 
+ record {
+   backgroundColor: text;
+   content: text;
+   image: text;
+   layout: LayoutOption;
+   textColor: text;
+   title: text;
+ };
+service : {
+  _immutableObjectStorageBlobsAreLive: (hashes: vec blob) -> (vec bool) query;
+  _immutableObjectStorageBlobsToDelete: () -> (vec blob) query;
+  _immutableObjectStorageConfirmBlobDeletion: (blobs: vec blob) -> ();
+  _immutableObjectStorageCreateCertificate: (blobHash: text) ->
+   (_ImmutableObjectStorageCreateCertificateResult);
+  _immutableObjectStorageRefillCashier: (refillInformation:
+   opt _ImmutableObjectStorageRefillInformation) ->
+   (_ImmutableObjectStorageRefillResult);
+  _immutableObjectStorageUpdateGatewayPrincipals: () -> ();
+  _initializeAccessControl: () -> ();
+  addDraftApartment: (apartment: Apartment) -> ();
+  addDraftArtist: (artist: Artist) -> ();
+  addDraftArtwork: (artwork: Artwork) -> ();
+  addDraftCityGuideEntry: (entry: CityGuideEntry) -> ();
+  addDraftExclusiveService: ("service": ExclusiveService) -> ();
+  addDraftMapMarker: (marker: MapMarker) -> ();
+  addDraftTestimonial: (testimonial: Testimonial) -> ();
+  addExperienceHighlight: (highlight: Highlight) -> ();
+  addExperienceSection: (section: ExperienceSection) -> ();
+  assignCallerUserRole: (user: principal, role: UserRole) -> ();
+  deleteDraftApartment: (id: text) -> ();
+  deleteDraftArtist: (id: text) -> ();
+  deleteDraftArtwork: (id: text) -> ();
+  deleteDraftCityGuideEntry: (id: text) -> ();
+  deleteDraftExclusiveService: (id: text) -> ();
+  deleteDraftMapMarker: (id: text) -> ();
+  deleteDraftTestimonial: (id: text) -> ();
+  deleteExperienceHighlight: (id: text) -> ();
+  deleteExperienceSection: (id: text) -> ();
+  deleteSectionImage: (section: text) -> ();
+  dropFileReference: (path: text) -> ();
+  getCallerUserProfile: () -> (opt UserProfile) query;
+  getCallerUserRole: () -> (UserRole) query;
+  getDraftApartment: (id: text) -> (opt Apartment) query;
+  getDraftArtist: (id: text) -> (opt Artist) query;
+  getDraftArtwork: (id: text) -> (opt Artwork) query;
+  getDraftCityGuideEntry: (id: text) -> (opt CityGuideEntry) query;
+  getDraftExclusiveService: (id: text) -> (opt ExclusiveService) query;
+  getDraftImprintPage: () -> (LegalPage) query;
+  getDraftMapMarker: (id: text) -> (opt MapMarker) query;
+  getDraftPrivacyPolicyPage: () -> (LegalPage) query;
+  getDraftSiteConfig: () -> (SiteConfig) query;
+  getDraftTermsPage: () -> (LegalPage) query;
+  getFileReference: (path: text) -> (opt FileReference) query;
+  getLiveApartment: (id: text) -> (opt Apartment) query;
+  getLiveArtist: (id: text) -> (opt Artist) query;
+  getLiveArtwork: (id: text) -> (opt Artwork) query;
+  getLiveCityGuideEntry: (id: text) -> (opt CityGuideEntry) query;
+  getLiveExclusiveService: (id: text) -> (opt ExclusiveService) query;
+  getLiveImprintPage: () -> (LegalPage) query;
+  getLiveMapMarker: (id: text) -> (opt MapMarker) query;
+  getLivePrivacyPolicyPage: () -> (LegalPage) query;
+  getLiveSiteConfig: () -> (SiteConfig) query;
+  getLiveTermsPage: () -> (LegalPage) query;
+  getUserProfile: (user: principal) -> (opt UserProfile) query;
+  isCallerAdmin: () -> (bool) query;
+  listContactSubmissions: () -> (vec ContactSubmission) query;
+  listDraftApartments: () -> (vec Apartment) query;
+  listDraftArtists: () -> (vec Artist) query;
+  listDraftArtworks: () -> (vec Artwork) query;
+  listDraftCityGuideEntries: () -> (vec CityGuideEntry) query;
+  listDraftExclusiveServices: () -> (vec ExclusiveService) query;
+  listDraftMapMarkers: () -> (vec MapMarker) query;
+  listDraftTestimonials: () -> (vec Testimonial) query;
+  listFileReferences: () -> (vec FileReference) query;
+  listLiveApartments: () -> (vec Apartment) query;
+  listLiveArtists: () -> (vec Artist) query;
+  listLiveArtworks: () -> (vec Artwork) query;
+  listLiveCityGuideEntries: () -> (vec CityGuideEntry) query;
+  listLiveExclusiveServices: () -> (vec ExclusiveService) query;
+  listLiveMapMarkers: () -> (vec MapMarker) query;
+  listLiveTestimonials: () -> (vec Testimonial) query;
+  permanentlyDeleteApartment: (id: text) -> ();
+  permanentlyDeleteArtist: (id: text) -> ();
+  permanentlyDeleteArtwork: (id: text) -> ();
+  publishChanges: () -> ();
+  registerFileReference: (path: text, hash: text) -> ();
+  reorderCityGuideEntries: (orderedIds: vec text) -> ();
+  reorderExclusiveServices: (orderedIds: vec text) -> ();
+  reorderExperienceSections: (sectionIds: vec text) -> ();
+  reorderMapMarkers: (orderedIds: vec text) -> ();
+  reorderTestimonials: (orderedIds: vec text) -> ();
+  saveCallerUserProfile: (profile: UserProfile) -> ();
+  setAccentColor: (color: text) -> ();
+  setApartmentDetailPageBackgroundColor: (color: text) -> ();
+  setApartmentsPageBackgroundColor: (color: text) -> ();
+  setArtistDetailPageBackgroundColor: (color: text) -> ();
+  setArtworkDetailPageBackgroundColor: (color: text) -> ();
+  /// Set or clear the object-storage key for the Aura Collection main landing image.
+  setAuraCollectionLandingImageKey: (key: opt text) -> ();
+  setAuraCollectionPageBackgroundColor: (color: text) -> ();
+  setBookingUrl: (url: text) -> ();
+  setDefaultAboutImage: (path: text) -> ();
+  setDefaultApartmentsImage: (path: text) -> ();
+  setDefaultCollectionImage: (path: text) -> ();
+  setDefaultExperienceImage: (path: text) -> ();
+  setDefaultHeroImage: (path: text) -> ();
+  /// Set or clear the image object-storage key on a draft city guide entry.
+  setDraftCityGuideImageKey: (id: text, imageKey: opt text) -> ();
+  /// Set or clear the PDF object-storage key on a draft city guide entry.
+  setDraftCityGuidePdfKey: (id: text, pdfKey: opt text) -> ();
+  /// Set or clear the image object-storage key on a draft exclusive service.
+  setDraftExclusiveServiceImageKey: (id: text, imageKey: opt text) -> ();
+  /// Set or clear the image object-storage key on a draft map marker.
+  setDraftMapMarkerImageKey: (id: text, imageKey: opt text) -> ();
+  setFeaturedArtists: (artistIds: vec text) -> ();
+  setFeaturedArtworks: (artworkIds: vec text) -> ();
+  setHeaderTextColor: (color: text) -> ();
+  setLandingPageBackgroundColor: (color: text) -> ();
+  setLogoDisplayLocation: (location: LogoDisplayLocation) -> ();
+  /// Store an object-storage key for the uploaded logo (preferred over raw path).
+  setLogoKey: (key: text) -> ();
+  setLogoSize: (size: nat) -> ();
+  setShowAuraCollectionOnLandingPage: (show: bool) -> ();
+  setTextColor: (color: text) -> ();
+  submitContactForm: (name: text, email: text, message: text) -> ();
+  updateAboutSection: (section: AboutSection) -> ();
+  updateApartmentGalleryImages: (apartmentId: text, images: vec text) -> ();
+  updateApartmentsSection: (section: ApartmentsSection) -> ();
+  updateArtistGalleryImages: (artistId: text, images: vec text) -> ();
+  updateArtworkGalleryImages: (artworkId: text, images: vec text) -> ();
+  updateAuraCollectionSection: (section: AuraCollectionSection) -> ();
+  updateContactInfo: (contactInfo: ContactInfo) -> ();
+  updateDraftApartment: (apartment: Apartment) -> ();
+  updateDraftArtist: (artist: Artist) -> ();
+  updateDraftArtwork: (artwork: Artwork) -> ();
+  updateDraftCityGuideEntry: (entry: CityGuideEntry) -> ();
+  updateDraftExclusiveService: ("service": ExclusiveService) -> ();
+  updateDraftMapMarker: (marker: MapMarker) -> ();
+  updateDraftSiteConfig: (config: SiteConfig) -> ();
+  updateDraftTestimonial: (testimonial: Testimonial) -> ();
+  updateExperienceHighlight: (highlight: Highlight) -> ();
+  updateExperiencePage: (page: ExperiencePage) -> ();
+  updateExperienceSection: (section: ExperienceSection) -> ();
+  updateFooterSection: (section: FooterSection) -> ();
+  updateHeroSection: (section: HeroSection) -> ();
+  updateImprintPage: (content: text, textColor: text, backgroundColor:
+   text) -> ();
+  updatePrivacyPolicyPage: (content: text, textColor: text, backgroundColor:
+   text) -> ();
+  updateSectionTexts: (sectionTexts: SectionTexts) -> ();
+  updateTermsPage: (content: text, textColor: text, backgroundColor: 
+   text) -> ();
+  uploadLogo: (path: text, placeholderPath: text) -> ();
+}

@@ -1,0 +1,19 @@
+{
+  "overview": "Aura Suites is a luxury short-term rental platform in Palermo Hollywood, Buenos Aires, showcasing high-end design apartments with curated art and lifestyle experiences. Features a fully modular, CRUD-enabled admin system and cohesive luxury branding throughout.",
+  "features": [
+    "Complete admin panel redesign with collapsible section groups and icons",
+    "Five logical admin groups: Content, Experience, Pages & Legal, Testimonials, Media",
+    "Parallax animations on the Experience page",
+    "Luxury-branded admin interface matching site aesthetics",
+    "Bug fixes for input focus, logo upload, and image display"
+  ],
+  "category": "hospitality",
+  "tags": [
+    "luxury",
+    "rental",
+    "admin",
+    "cms",
+    "internet-computer"
+  ],
+  "last_updated": "2026-04-19T21:29:39.791Z"
+}

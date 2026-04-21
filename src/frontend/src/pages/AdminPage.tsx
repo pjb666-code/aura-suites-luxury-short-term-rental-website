@@ -26,18 +26,28 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import AboutAdmin from "../components/admin/AboutAdmin";
 import ApartmentsAdmin from "../components/admin/ApartmentsAdmin";
+import ArtistsAdmin from "../components/admin/ArtistsAdmin";
+import ArtworksAdmin from "../components/admin/ArtworksAdmin";
 import AuraCollectionAdmin from "../components/admin/AuraCollectionAdmin";
+import AuraCollectionLandingAdmin from "../components/admin/AuraCollectionLandingAdmin";
+import BookingUrlAdmin from "../components/admin/BookingUrlAdmin";
 import CityGuideAdmin from "../components/admin/CityGuideAdmin";
+import ColorCustomizationAdmin from "../components/admin/ColorCustomizationAdmin";
 import ContactInfoAdmin from "../components/admin/ContactInfoAdmin";
+import ContactSubmissionsAdmin from "../components/admin/ContactSubmissionsAdmin";
 import ExclusiveServicesAdmin from "../components/admin/ExclusiveServicesAdmin";
 import ExperienceAdmin from "../components/admin/ExperienceAdmin";
 import FooterAdmin from "../components/admin/FooterAdmin";
+import HeroAdmin from "../components/admin/HeroAdmin";
 import LandingPageAdmin from "../components/admin/LandingPageAdmin";
 import LegalAdmin from "../components/admin/LegalAdmin";
+import LogoAdmin from "../components/admin/LogoAdmin";
 import MapManagerAdmin from "../components/admin/MapManagerAdmin";
 import MediaAdmin from "../components/admin/MediaAdmin";
 import TestimonialsAdmin from "../components/admin/TestimonialsAdmin";
+import { useActor } from "../hooks/useActor";
 import {
   useGetCallerUserProfile,
   useIsCallerAdmin,
@@ -49,14 +59,23 @@ import {
 
 type SectionKey =
   | "landing"
+  | "hero"
+  | "about"
+  | "logo"
+  | "booking-url"
+  | "color-customization"
   | "apartments"
   | "collection"
+  | "aura-collection-landing"
+  | "artists"
+  | "artworks"
   | "experience-modules"
   | "map-manager"
   | "city-guide"
   | "exclusive-services"
   | "legal"
   | "contact-info"
+  | "contact-submissions"
   | "footer"
   | "testimonials"
   | "media";
@@ -77,8 +96,24 @@ const navGroups: NavGroup[] = [
     icon: LayoutDashboard,
     items: [
       { key: "landing", label: "Landing Page", icon: LayoutDashboard },
+      { key: "hero", label: "Hero", icon: LayoutDashboard },
+      { key: "about", label: "About", icon: LayoutDashboard },
+      { key: "logo", label: "Logo", icon: LayoutDashboard },
+      { key: "booking-url", label: "Booking URL", icon: LayoutDashboard },
+      {
+        key: "color-customization",
+        label: "Color Customization",
+        icon: LayoutDashboard,
+      },
       { key: "apartments", label: "Apartments", icon: LayoutDashboard },
       { key: "collection", label: "Aura Collection", icon: Star },
+      {
+        key: "aura-collection-landing",
+        label: "Aura Collection Landing",
+        icon: Star,
+      },
+      { key: "artists", label: "Artists", icon: Star },
+      { key: "artworks", label: "Artworks", icon: Star },
     ],
   },
   {
@@ -99,6 +134,11 @@ const navGroups: NavGroup[] = [
     items: [
       { key: "legal", label: "Legal Pages", icon: FileText },
       { key: "contact-info", label: "Contact Information", icon: FileText },
+      {
+        key: "contact-submissions",
+        label: "Contact Submissions",
+        icon: FileText,
+      },
       { key: "footer", label: "Footer", icon: FileText },
     ],
   },
@@ -118,14 +158,23 @@ const navGroups: NavGroup[] = [
 
 const SECTION_TITLES: Record<SectionKey, string> = {
   landing: "Landing Page",
+  hero: "Hero",
+  about: "About",
+  logo: "Logo",
+  "booking-url": "Booking URL",
+  "color-customization": "Color Customization",
   apartments: "Apartments",
   collection: "Aura Collection",
+  "aura-collection-landing": "Aura Collection Landing",
+  artists: "Artists",
+  artworks: "Artworks",
   "experience-modules": "Experience Modules",
   "map-manager": "Map Manager",
   "city-guide": "City Guide",
   "exclusive-services": "Exclusive Services",
   legal: "Legal Pages",
   "contact-info": "Contact Information",
+  "contact-submissions": "Contact Submissions",
   footer: "Footer",
   testimonials: "Testimonials",
   media: "Media Library",
@@ -228,10 +277,26 @@ function SectionContent({ section }: { section: SectionKey }) {
   switch (section) {
     case "landing":
       return <LandingPageAdmin />;
+    case "hero":
+      return <HeroAdmin />;
+    case "about":
+      return <AboutAdmin />;
+    case "logo":
+      return <LogoAdmin />;
+    case "booking-url":
+      return <BookingUrlAdmin />;
+    case "color-customization":
+      return <ColorCustomizationAdmin />;
     case "apartments":
       return <ApartmentsAdmin />;
     case "collection":
       return <AuraCollectionAdmin />;
+    case "aura-collection-landing":
+      return <AuraCollectionLandingAdmin />;
+    case "artists":
+      return <ArtistsAdmin />;
+    case "artworks":
+      return <ArtworksAdmin />;
     case "experience-modules":
       return <ExperienceAdmin />;
     case "map-manager":
@@ -244,6 +309,8 @@ function SectionContent({ section }: { section: SectionKey }) {
       return <LegalAdmin />;
     case "contact-info":
       return <ContactInfoAdmin />;
+    case "contact-submissions":
+      return <ContactSubmissionsAdmin />;
     case "footer":
       return <FooterAdmin />;
     case "testimonials":
@@ -280,6 +347,7 @@ export default function AdminPage() {
   const { login, clear, loginStatus, identity, isInitializing } =
     useInternetIdentity();
   const queryClient = useQueryClient();
+  const { actor } = useActor();
   const {
     data: userProfile,
     isLoading: profileLoading,
@@ -287,7 +355,11 @@ export default function AdminPage() {
   } = useGetCallerUserProfile();
   const { mutate: saveProfile, isPending: savingProfile } =
     useSaveCallerUserProfile();
-  const { data: isAdmin, isLoading: adminLoading } = useIsCallerAdmin();
+  const {
+    data: isAdmin,
+    isLoading: adminLoading,
+    refetch: refetchAdmin,
+  } = useIsCallerAdmin();
   const { mutate: publishChanges, isPending: publishing } = usePublishChanges();
 
   const [profileName, setProfileName] = useState("");
@@ -295,6 +367,8 @@ export default function AdminPage() {
   const [collapsed, setCollapsed] =
     useState<Record<string, boolean>>(loadCollapsed);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [claimingAdmin, setClaimingAdmin] = useState(false);
+  const [claimError, setClaimError] = useState<string | null>(null);
 
   const isAuthenticated = !!identity;
   const showProfileSetup =
@@ -336,6 +410,21 @@ export default function AdminPage() {
         onError: () => toast.error("Failed to create profile"),
       },
     );
+  };
+
+  const handleClaimAdmin = async () => {
+    if (!actor) return;
+    setClaimingAdmin(true);
+    setClaimError(null);
+    try {
+      await actor._initializeAccessControl();
+      await queryClient.invalidateQueries({ queryKey: ["isCallerAdmin"] });
+      await refetchAdmin();
+    } catch {
+      setClaimError("Admin already exists — use the correct Internet Identity");
+    } finally {
+      setClaimingAdmin(false);
+    }
   };
 
   const handlePublish = () => {
@@ -470,11 +559,35 @@ export default function AdminPage() {
               You don't have permission to access the admin panel
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-3">
+            <Button
+              onClick={handleClaimAdmin}
+              disabled={claimingAdmin || !actor}
+              className="w-full bg-emerald-600 text-white hover:bg-emerald-700 font-medium"
+              data-ocid="admin-claim-btn"
+            >
+              {claimingAdmin ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Claiming admin…
+                </>
+              ) : (
+                "Claim Admin"
+              )}
+            </Button>
+            {claimError && (
+              <p
+                className="text-sm text-red-600 text-center"
+                data-ocid="admin-claim-error"
+              >
+                {claimError}
+              </p>
+            )}
             <Button
               onClick={handleLogout}
               variant="outline"
               className="w-full border-[#e2e5eb] text-[#1a1d23] hover:bg-[#f0f2f7]"
+              data-ocid="admin-signout-btn"
             >
               <LogOut className="mr-2 h-4 w-4" />
               Sign Out

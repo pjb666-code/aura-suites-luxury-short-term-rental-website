@@ -292,7 +292,17 @@ export interface backendInterface {
     getLiveSiteConfig(): Promise<SiteConfig>;
     getLiveTermsPage(): Promise<LegalPage>;
     getUserProfile(user: Principal): Promise<UserProfile | null>;
+    /**
+     * / Returns true if no active admin principal exists in the access control state.
+     * / Used by the frontend to decide whether to show the "Claim Admin" button.
+     */
+    hasNoAdmin(): Promise<boolean>;
     isCallerAdmin(): Promise<boolean>;
+    /**
+     * / Safe variant of isCallerAdmin that returns false instead of trapping for
+     * / unregistered callers (callers who have not yet called _initializeAccessControl).
+     */
+    isCallerAdminSafe(): Promise<boolean>;
     listContactSubmissions(): Promise<Array<ContactSubmission>>;
     listDraftApartments(): Promise<Array<Apartment>>;
     listDraftArtists(): Promise<Array<Artist>>;

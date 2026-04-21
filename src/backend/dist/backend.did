@@ -285,6 +285,11 @@ service : {
    (_ImmutableObjectStorageRefillResult);
   _immutableObjectStorageUpdateGatewayPrincipals: () -> ();
   _initializeAccessControl: () -> ();
+  /// Allows a caller to reclaim admin when adminAssigned=true but no active admin
+  /// exists in userRoles (e.g. after a canister upgrade that reset state).
+  /// If the caller already has a #user role (assigned on a previous attempt),
+  /// their role is cleared first so initialize() can promote them to #admin.
+  _reinitializeAccessControl: () -> ();
   addDraftApartment: (apartment: Apartment) -> ();
   addDraftArtist: (artist: Artist) -> ();
   addDraftArtwork: (artwork: Artwork) -> ();
@@ -330,7 +335,13 @@ service : {
   getLiveSiteConfig: () -> (SiteConfig) query;
   getLiveTermsPage: () -> (LegalPage) query;
   getUserProfile: (user: principal) -> (opt UserProfile) query;
+  /// Returns true if no active admin principal exists in the access control state.
+  /// Used by the frontend to decide whether to show the "Claim Admin" button.
+  hasNoAdmin: () -> (bool) query;
   isCallerAdmin: () -> (bool) query;
+  /// Safe variant of isCallerAdmin that returns false instead of trapping for
+  /// unregistered callers (callers who have not yet called _initializeAccessControl).
+  isCallerAdminSafe: () -> (bool) query;
   listContactSubmissions: () -> (vec ContactSubmission) query;
   listDraftApartments: () -> (vec Apartment) query;
   listDraftArtists: () -> (vec Artist) query;

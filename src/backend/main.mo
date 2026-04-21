@@ -434,6 +434,43 @@ actor AuraSuites {
 
   include MixinAuthorization(accessControlState);
 
+  /// Safe variant of isCallerAdmin that returns false instead of trapping for
+  /// unregistered callers (callers who have not yet called _initializeAccessControl).
+  public query ({ caller }) func isCallerAdminSafe() : async Bool {
+    if (caller.isAnonymous()) { return false };
+    switch (accessControlState.userRoles.get(caller)) {
+      case (?(#admin)) { true };
+      case (_) { false };
+    };
+  };
+
+  /// Returns true if no active admin principal exists in the access control state.
+  /// Used by the frontend to decide whether to show the "Claim Admin" button.
+  public query func hasNoAdmin() : async Bool {
+    let hasActiveAdmin = accessControlState.userRoles.entries().find(
+      func((_, role) : (Principal, AccessControl.UserRole)) : Bool { role == #admin }
+    ) != null;
+    not hasActiveAdmin;
+  };
+
+  /// Allows a caller to reclaim admin when adminAssigned=true but no active admin
+  /// exists in userRoles (e.g. after a canister upgrade that reset state).
+  /// If the caller already has a #user role (assigned on a previous attempt),
+  /// their role is cleared first so initialize() can promote them to #admin.
+  public shared ({ caller }) func _reinitializeAccessControl() : async () {
+    if (caller.isAnonymous()) { return };
+    // Only proceed if there is no active admin.
+    let hasActiveAdmin = accessControlState.userRoles.entries().find(
+      func((_, role) : (Principal, AccessControl.UserRole)) : Bool { role == #admin }
+    ) != null;
+    if (hasActiveAdmin) { return };
+    // Clear any existing role for this caller so initialize() can re-evaluate.
+    accessControlState.userRoles.remove(caller);
+    // Reset the flag so initialize() takes the "first caller → admin" branch.
+    accessControlState.adminAssigned := false;
+    AccessControl.initialize(accessControlState, caller);
+  };
+
   public query ({ caller }) func getCallerUserProfile() : async ?UserProfile {
     if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
       Runtime.trap("Unauthorized: Only users can view profiles");

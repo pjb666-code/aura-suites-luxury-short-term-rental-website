@@ -1,0 +1,67 @@
+import { ae as useLiveTermsPage, j as jsxRuntimeExports, a7 as LoaderCircle, H as Header, ac as Link, F as Footer } from "./index-Db3bI8ig.js";
+import { A as ArrowLeft } from "./arrow-left-DUgYjaDT.js";
+function TermsPage() {
+  const { data: termsPage, isLoading } = useLiveTermsPage();
+  if (isLoading) {
+    return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex min-h-screen items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "h-8 w-8 animate-spin text-luxury-gold" }) });
+  }
+  const backgroundColor = (termsPage == null ? void 0 : termsPage.backgroundColor) || "#FFFFFF";
+  const textColor = (termsPage == null ? void 0 : termsPage.textColor) || "#000000";
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen", style: { backgroundColor }, children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Header, {}),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("main", { className: "container mx-auto px-4 py-16", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("article", { className: "mx-auto max-w-4xl", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        Link,
+        {
+          to: "/",
+          className: "mb-8 inline-flex items-center gap-2 text-sm opacity-60 transition-opacity hover:opacity-100",
+          style: { color: textColor },
+          "data-ocid": "terms-back-home",
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "h-4 w-4" }),
+            "Back to Home"
+          ]
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "h1",
+        {
+          className: "mb-8 mt-6 font-serif text-4xl font-light md:text-5xl",
+          style: { color: textColor },
+          children: (termsPage == null ? void 0 : termsPage.title) || "Terms & Conditions"
+        }
+      ),
+      (termsPage == null ? void 0 : termsPage.content) ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "div",
+        {
+          className: "prose prose-lg max-w-none",
+          style: { color: textColor },
+          children: termsPage.content.split("\n").map((paragraph) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "p",
+            {
+              className: "mb-4 leading-relaxed",
+              children: paragraph
+            },
+            paragraph || Math.random().toString(36)
+          ))
+        }
+      ) : /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-lg opacity-60", style: { color: textColor }, children: [
+        "Terms & Conditions have not been added yet. Please check back later or contact us at",
+        " ",
+        /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "mailto:contact@aurasuites.info", className: "underline", children: "contact@aurasuites.info" }),
+        "."
+      ] }),
+      (termsPage == null ? void 0 : termsPage.lastUpdated) && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "mt-8 text-sm opacity-70", style: { color: textColor }, children: [
+        "Last updated:",
+        " ",
+        new Date(
+          Number(termsPage.lastUpdated) / 1e6
+        ).toLocaleDateString()
+      ] })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Footer, {})
+  ] });
+}
+export {
+  TermsPage as default
+};

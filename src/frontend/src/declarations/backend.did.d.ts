@@ -264,6 +264,13 @@ export interface _SERVICE {
   >,
   '_immutableObjectStorageUpdateGatewayPrincipals' : ActorMethod<[], undefined>,
   '_initializeAccessControl' : ActorMethod<[], undefined>,
+  /**
+   * / Allows a caller to reclaim admin when adminAssigned=true but no active admin
+   * / exists in userRoles (e.g. after a canister upgrade that reset state).
+   * / If the caller already has a #user role (assigned on a previous attempt),
+   * / their role is cleared first so initialize() can promote them to #admin.
+   */
+  '_reinitializeAccessControl' : ActorMethod<[], undefined>,
   'addDraftApartment' : ActorMethod<[Apartment], undefined>,
   'addDraftArtist' : ActorMethod<[Artist], undefined>,
   'addDraftArtwork' : ActorMethod<[Artwork], undefined>,
@@ -309,7 +316,17 @@ export interface _SERVICE {
   'getLiveSiteConfig' : ActorMethod<[], SiteConfig>,
   'getLiveTermsPage' : ActorMethod<[], LegalPage>,
   'getUserProfile' : ActorMethod<[Principal], [] | [UserProfile]>,
+  /**
+   * / Returns true if no active admin principal exists in the access control state.
+   * / Used by the frontend to decide whether to show the "Claim Admin" button.
+   */
+  'hasNoAdmin' : ActorMethod<[], boolean>,
   'isCallerAdmin' : ActorMethod<[], boolean>,
+  /**
+   * / Safe variant of isCallerAdmin that returns false instead of trapping for
+   * / unregistered callers (callers who have not yet called _initializeAccessControl).
+   */
+  'isCallerAdminSafe' : ActorMethod<[], boolean>,
   'listContactSubmissions' : ActorMethod<[], Array<ContactSubmission>>,
   'listDraftApartments' : ActorMethod<[], Array<Apartment>>,
   'listDraftArtists' : ActorMethod<[], Array<Artist>>,

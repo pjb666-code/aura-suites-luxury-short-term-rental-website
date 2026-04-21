@@ -419,9 +419,16 @@ export default function AdminPage() {
     try {
       await actor._initializeAccessControl();
       await queryClient.invalidateQueries({ queryKey: ["isCallerAdmin"] });
-      await refetchAdmin();
+      const result = await refetchAdmin();
+      if (!result.data) {
+        setClaimError(
+          "Setup incomplete — please open the Caffeine dashboard for this app and assign your Internet Identity as admin under Access Control.",
+        );
+      }
     } catch {
-      setClaimError("Admin already exists — use the correct Internet Identity");
+      setClaimError(
+        "Setup incomplete — please open the Caffeine dashboard for this app and assign your Internet Identity as admin under Access Control.",
+      );
     } finally {
       setClaimingAdmin(false);
     }

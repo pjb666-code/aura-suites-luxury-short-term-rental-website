@@ -347,6 +347,13 @@ export interface backendInterface {
     _immutableObjectStorageRefillCashier(refillInformation: _ImmutableObjectStorageRefillInformation | null): Promise<_ImmutableObjectStorageRefillResult>;
     _immutableObjectStorageUpdateGatewayPrincipals(): Promise<void>;
     _initializeAccessControl(): Promise<void>;
+    /**
+     * / Allows a caller to reclaim admin when adminAssigned=true but no active admin
+     * / exists in userRoles (e.g. after a canister upgrade that reset state).
+     * / If the caller already has a #user role (assigned on a previous attempt),
+     * / their role is cleared first so initialize() can promote them to #admin.
+     */
+    _reinitializeAccessControl(): Promise<void>;
     addDraftApartment(apartment: Apartment): Promise<void>;
     addDraftArtist(artist: Artist): Promise<void>;
     addDraftArtwork(artwork: Artwork): Promise<void>;
@@ -392,7 +399,17 @@ export interface backendInterface {
     getLiveSiteConfig(): Promise<SiteConfig>;
     getLiveTermsPage(): Promise<LegalPage>;
     getUserProfile(user: Principal): Promise<UserProfile | null>;
+    /**
+     * / Returns true if no active admin principal exists in the access control state.
+     * / Used by the frontend to decide whether to show the "Claim Admin" button.
+     */
+    hasNoAdmin(): Promise<boolean>;
     isCallerAdmin(): Promise<boolean>;
+    /**
+     * / Safe variant of isCallerAdmin that returns false instead of trapping for
+     * / unregistered callers (callers who have not yet called _initializeAccessControl).
+     */
+    isCallerAdminSafe(): Promise<boolean>;
     listContactSubmissions(): Promise<Array<ContactSubmission>>;
     listDraftApartments(): Promise<Array<Apartment>>;
     listDraftArtists(): Promise<Array<Artist>>;
@@ -589,6 +606,20 @@ export class Backend implements backendInterface {
             }
         } else {
             const result = await this.actor._initializeAccessControl();
+            return result;
+        }
+    }
+    async _reinitializeAccessControl(): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor._reinitializeAccessControl();
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor._reinitializeAccessControl();
             return result;
         }
     }
@@ -1222,6 +1253,20 @@ export class Backend implements backendInterface {
             return from_candid_opt_n24(this._uploadFile, this._downloadFile, result);
         }
     }
+    async hasNoAdmin(): Promise<boolean> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.hasNoAdmin();
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.hasNoAdmin();
+            return result;
+        }
+    }
     async isCallerAdmin(): Promise<boolean> {
         if (this.processError) {
             try {
@@ -1233,6 +1278,20 @@ export class Backend implements backendInterface {
             }
         } else {
             const result = await this.actor.isCallerAdmin();
+            return result;
+        }
+    }
+    async isCallerAdminSafe(): Promise<boolean> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.isCallerAdminSafe();
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.isCallerAdminSafe();
             return result;
         }
     }

@@ -1,0 +1,372 @@
+// Version: 1.0.0
+type AboutSection__583814124 =
+  {
+    backgroundColor : Text;
+    content : Text;
+    image : Text;
+    layout : LayoutOption__624131777;
+    textColor : Text;
+    title : Text
+  };
+type Apartment__46480018 =
+  {
+    address : Text;
+    amenities : [Text];
+    bookingUrl : Text;
+    city : Text;
+    description : Text;
+    id : Text;
+    isActive : Bool;
+    name : Text;
+    photos : [Text]
+  };
+type ApartmentsSection__984198017 =
+  {
+    backgroundColor : Text;
+    backgroundImage : Text;
+    description : Text;
+    layout : LayoutOption__624131777;
+    textColor : Text;
+    title : Text
+  };
+type Artist__338658521 =
+  {
+    artworks : [Text];
+    bio : Text;
+    galleryImages : [Text];
+    id : Text;
+    name : Text;
+    photo : Text
+  };
+type Artwork__12754076 =
+  {
+    artistId : Text;
+    description : Text;
+    galleryImages : [Text];
+    id : Text;
+    isForSale : Bool;
+    photo : Text;
+    price : ?Nat;
+    title : Text
+  };
+type AuraCollectionSection__507560079 =
+  {
+    auraCollectionMainImageKey : ?Text;
+    backgroundColor : Text;
+    backgroundImage : Text;
+    contactInfo : ContactInfo__110675407;
+    description : Text;
+    featuredArtists : [Text];
+    featuredArtworks : [Text];
+    layout : LayoutOption__624131777;
+    sectionTexts : SectionTexts__756155734;
+    showOnLandingPage : Bool;
+    textColor : Text;
+    title : Text
+  };
+type CardStyle__162677916 = {#classic; #minimal; #modern};
+type CityGuideEntry__1068226047 =
+  {
+    category : Text;
+    description : Text;
+    externalLink : ?Text;
+    id : Text;
+    imageKey : ?Text;
+    pdfKey : ?Text;
+    sortOrder : Nat;
+    title : Text;
+    visible : Bool
+  };
+type ContactInfo__110675407 =
+  {
+    address : Text;
+    contactText : Text;
+    email : Text;
+    phone : Text;
+    socialLinks : [SocialLink__838663127]
+  };
+type ContactSubmission__390548495 =
+  {email : Text; id : Text; message : Text; name : Text; timestamp : Int};
+type Data__791452850<K, V> =
+  {var count : Nat__490723111; kvs : [var ?(K, V)]};
+type ExclusiveService__830945030 =
+  {
+    category : Text;
+    description : Text;
+    id : Text;
+    imageKey : ?Text;
+    name : Text;
+    priceInfo : ?Text;
+    requestLink : ?Text;
+    sortOrder : Nat;
+    visible : Bool
+  };
+type ExperiencePage__915915151 =
+  {
+    backgroundColor : Text;
+    backgroundImage : Text;
+    cardStyle : CardStyle__162677916;
+    description : Text;
+    highlights : [Highlight__396516253];
+    layout : LayoutOption__624131777;
+    sections : [ExperienceSection__623811527];
+    textColor : Text;
+    title : Text
+  };
+type ExperienceSection__623811527 =
+  {
+    animationType : Text;
+    description : Text;
+    id : Text;
+    images : [Text];
+    isActive : Bool;
+    layout : LayoutOption__624131777;
+    order : Nat;
+    title : Text;
+    videos : [Text]
+  };
+type FileReference__185630561 = {hash : Text; path : Text};
+type FooterSection__567155339 =
+  {
+    backgroundColor : Text;
+    contactInfo : Text;
+    layout : LayoutOption__624131777;
+    socialLinks : [Text];
+    textColor : Text
+  };
+type HeroSection__685865635 =
+  {
+    backgroundColor : Text;
+    backgroundImage : Text;
+    layout : LayoutOption__624131777;
+    subtitle : Text;
+    textColor : Text;
+    title : Text
+  };
+type Highlight__396516253 =
+  {description : Text; icon : Text; id : Text; isActive : Bool; title : Text};
+type Internal__8484328<K, V> =
+  {children : [var ?Node__46230540<K, V>]; data : Data__791452850<K, V>};
+type LayoutOption__624131777 =
+  {#centered; #gallery; #grid; #leftImage; #list; #simple};
+type Leaf__809889148<K, V> = {data : Data__791452850<K, V>};
+type LegalPage__861318351 =
+  {
+    backgroundColor : Text;
+    content : Text;
+    lastUpdated : Int;
+    textColor : Text;
+    title : Text
+  };
+type LogoDisplayLocation__600140057 = {#both; #footer; #header};
+type MapMarker__436667351 =
+  {
+    address : Text;
+    category : Text;
+    description : Text;
+    id : Text;
+    imageKey : ?Text;
+    lat : Float;
+    lng : Float;
+    name : Text;
+    sortOrder : Nat;
+    visible : Bool;
+    website : ?Text
+  };
+type Map__158565046<K, V> = Map__297112838<K, V>;
+type Map__297112838<K, V> =
+  {var root : Node__46230540<K, V>; var size : Nat__490723111};
+type Map__605269027<K, V> = Map__158565046<K, V>;
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__46230540<K, V> =
+  {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type SectionTexts__756155734 = {discoverText : Text; featuredText : Text};
+type SocialLink__838663127 = {platform : Text; url : Text};
+type Testimonial__393323594 =
+  {
+    authorPhoto : ?Blob;
+    date : Text;
+    id : Text;
+    name : Text;
+    sortOrder : Nat;
+    stars : Nat;
+    text : Text;
+    visible : Bool
+  };
+type UserProfile__491224006 = {name : Text};
+type UserRole__1054455867 = {#admin; #guest; #user};
+actor {
+  stable var accessControlState :
+    {
+      var adminAssigned : Bool;
+      userRoles : Map__605269027<Principal, UserRole__1054455867>
+    };
+  stable var contactSubmissions :
+    {
+      var root : Node__46230540<Text, ContactSubmission__390548495>;
+      var size : Nat__490723111
+    };
+  stable var draftApartments :
+    {
+      var root : Node__46230540<Text, Apartment__46480018>;
+      var size : Nat__490723111
+    };
+  stable var draftArtists :
+    {
+      var root : Node__46230540<Text, Artist__338658521>;
+      var size : Nat__490723111
+    };
+  stable var draftArtworks :
+    {
+      var root : Node__46230540<Text, Artwork__12754076>;
+      var size : Nat__490723111
+    };
+  stable var draftCityGuideEntries :
+    {
+      var root : Node__46230540<Text, CityGuideEntry__1068226047>;
+      var size : Nat__490723111
+    };
+  stable var draftExclusiveServices :
+    {
+      var root : Node__46230540<Text, ExclusiveService__830945030>;
+      var size : Nat__490723111
+    };
+  stable var draftLegalPages :
+    {
+      imprint : LegalPage__861318351;
+      privacyPolicy : LegalPage__861318351;
+      terms : LegalPage__861318351
+    };
+  stable var draftMapMarkers :
+    {
+      var root : Node__46230540<Text, MapMarker__436667351>;
+      var size : Nat__490723111
+    };
+  stable var draftSiteConfig :
+    {
+      aboutSection : AboutSection__583814124;
+      accentColor : Text;
+      apartmentDetailPageBackgroundColor : Text;
+      apartmentsPageBackgroundColor : Text;
+      apartmentsSection : ApartmentsSection__984198017;
+      artistDetailPageBackgroundColor : Text;
+      artworkDetailPageBackgroundColor : Text;
+      auraCollectionPageBackgroundColor : Text;
+      auraCollectionSection : AuraCollectionSection__507560079;
+      bookingUrl : Text;
+      contactEmail : Text;
+      defaultAboutImage : Text;
+      defaultApartmentImage : Text;
+      defaultApartmentsImage : Text;
+      defaultArtistImage : Text;
+      defaultArtworkImage : Text;
+      defaultCollectionImage : Text;
+      defaultExperienceImage : Text;
+      defaultHeroImage : Text;
+      experiencePage : ExperiencePage__915915151;
+      footerSection : FooterSection__567155339;
+      headerTextColor : Text;
+      heroSection : HeroSection__685865635;
+      landingPageBackgroundColor : Text;
+      language : Text;
+      logoDisplayLocation : LogoDisplayLocation__600140057;
+      logoPath : Text;
+      logoPlaceholderPath : Text;
+      logoSize : Nat;
+      textColor : Text
+    };
+  stable var draftTestimonials :
+    {
+      var root : Node__46230540<Text, Testimonial__393323594>;
+      var size : Nat__490723111
+    };
+  stable var fileReferences :
+    {
+      var root : Node__46230540<Text, FileReference__185630561>;
+      var size : Nat__490723111
+    };
+  stable var liveApartments :
+    {
+      var root : Node__46230540<Text, Apartment__46480018>;
+      var size : Nat__490723111
+    };
+  stable var liveArtists :
+    {
+      var root : Node__46230540<Text, Artist__338658521>;
+      var size : Nat__490723111
+    };
+  stable var liveArtworks :
+    {
+      var root : Node__46230540<Text, Artwork__12754076>;
+      var size : Nat__490723111
+    };
+  stable var liveCityGuideEntries :
+    {
+      var root : Node__46230540<Text, CityGuideEntry__1068226047>;
+      var size : Nat__490723111
+    };
+  stable var liveExclusiveServices :
+    {
+      var root : Node__46230540<Text, ExclusiveService__830945030>;
+      var size : Nat__490723111
+    };
+  stable var liveLegalPages :
+    {
+      imprint : LegalPage__861318351;
+      privacyPolicy : LegalPage__861318351;
+      terms : LegalPage__861318351
+    };
+  stable var liveMapMarkers :
+    {
+      var root : Node__46230540<Text, MapMarker__436667351>;
+      var size : Nat__490723111
+    };
+  stable var liveSiteConfig :
+    {
+      aboutSection : AboutSection__583814124;
+      accentColor : Text;
+      apartmentDetailPageBackgroundColor : Text;
+      apartmentsPageBackgroundColor : Text;
+      apartmentsSection : ApartmentsSection__984198017;
+      artistDetailPageBackgroundColor : Text;
+      artworkDetailPageBackgroundColor : Text;
+      auraCollectionPageBackgroundColor : Text;
+      auraCollectionSection : AuraCollectionSection__507560079;
+      bookingUrl : Text;
+      contactEmail : Text;
+      defaultAboutImage : Text;
+      defaultApartmentImage : Text;
+      defaultApartmentsImage : Text;
+      defaultArtistImage : Text;
+      defaultArtworkImage : Text;
+      defaultCollectionImage : Text;
+      defaultExperienceImage : Text;
+      defaultHeroImage : Text;
+      experiencePage : ExperiencePage__915915151;
+      footerSection : FooterSection__567155339;
+      headerTextColor : Text;
+      heroSection : HeroSection__685865635;
+      landingPageBackgroundColor : Text;
+      language : Text;
+      logoDisplayLocation : LogoDisplayLocation__600140057;
+      logoPath : Text;
+      logoPlaceholderPath : Text;
+      logoSize : Nat;
+      textColor : Text
+    };
+  stable var liveTestimonials :
+    {
+      var root : Node__46230540<Text, Testimonial__393323594>;
+      var size : Nat__490723111
+    };
+  stable var nextCityGuideEntryId : Nat;
+  stable var nextExclusiveServiceId : Nat;
+  stable var nextMapMarkerId : Nat;
+  stable var nextTestimonialId : Nat;
+  stable var userProfiles :
+    {
+      var root : Node__46230540<Principal, UserProfile__491224006>;
+      var size : Nat__490723111
+    }
+};

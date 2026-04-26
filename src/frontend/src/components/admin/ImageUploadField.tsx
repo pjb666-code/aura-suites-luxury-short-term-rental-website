@@ -9,6 +9,7 @@ const ACCEPTED_IMAGE_TYPES = [
   "image/jpeg",
   "image/jpg",
   "image/webp",
+  "image/svg+xml",
 ];
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 
@@ -65,6 +66,7 @@ export function ImageUploadField({
     ".jpg",
     ".jpeg",
     ".webp",
+    ".svg",
     ...extraAccept.map((t) => `.${t.split("/")[1]}`),
   ].join(",");
 
@@ -159,7 +161,7 @@ export function ImageUploadField({
                 <ImageIcon className="h-4 w-4" />
               </div>
               <span className="text-xs text-[#96a0b5]">
-                Click to upload .png, .jpg, .webp
+                Click to upload .png, .jpg, .webp, .svg
               </span>
             </>
           )}

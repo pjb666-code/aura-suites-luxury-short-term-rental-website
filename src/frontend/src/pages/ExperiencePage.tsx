@@ -812,7 +812,7 @@ function CityGuidePdfSection({
         />
       </div>
 
-      <div className="px-6 pb-6">
+      <div className="px-6 pb-8">
         {isLoading ? (
           <div
             className="flex h-[500px] items-center justify-center rounded-xl"
@@ -829,19 +829,47 @@ function CityGuidePdfSection({
             </div>
           </div>
         ) : pdfUrl ? (
-          <div
-            className="overflow-hidden rounded-xl border"
-            style={{ borderColor: `${accentColor}20` }}
-          >
-            <iframe
-              src={pdfUrl}
-              width="100%"
-              height="600px"
-              style={{ border: "none", display: "block" }}
-              title="City Guide PDF"
-              data-ocid="city-guide-pdf-viewer"
-            />
-          </div>
+          <>
+            <div
+              className="w-full overflow-hidden rounded-xl border shadow-lg"
+              style={{ height: "700px", borderColor: `${accentColor}20` }}
+            >
+              <object
+                data={pdfUrl}
+                type="application/pdf"
+                width="100%"
+                height="100%"
+                aria-label="City Guide PDF"
+                data-ocid="city-guide-pdf-viewer"
+              >
+                <iframe
+                  src={`https://docs.google.com/gviewer?embedded=true&url=${encodeURIComponent(pdfUrl)}`}
+                  width="100%"
+                  height="100%"
+                  style={{ border: "none" }}
+                  title="City Guide PDF"
+                />
+              </object>
+            </div>
+            <div className="mt-4 flex justify-center">
+              <a
+                href={pdfUrl}
+                download
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium transition-opacity hover:opacity-80"
+                style={{
+                  backgroundColor: `${accentColor}18`,
+                  color: accentColor,
+                  border: `1px solid ${accentColor}40`,
+                }}
+                data-ocid="city-guide-pdf-download"
+              >
+                <BookOpen className="h-4 w-4" />
+                Download City Guide
+              </a>
+            </div>
+          </>
         ) : null}
       </div>
     </motion.section>
@@ -870,8 +898,6 @@ function CityGuideSection({
     acc[e.category].push(e);
     return acc;
   }, {});
-
-  if (visible.length === 0) return null;
 
   const toggle = (cat: string) => {
     setOpenCats((prev) => {
@@ -907,94 +933,123 @@ function CityGuideSection({
         </p>
       </div>
 
-      <div className="space-y-3">
-        {Object.entries(grouped).map(([cat, items], catIdx) => {
-          const isOpen = openCats.has(cat);
-          const CatIcon = categoryIconMap[cat] ?? Compass;
-          const catColor = categoryColorMap[cat] ?? accentColor;
-          return (
-            <motion.div
-              key={cat}
-              initial={
-                shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }
-              }
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{
-                delay: catIdx * 0.07,
-                duration: 0.4,
-                ease: "easeInOut",
-              }}
-              className="overflow-hidden rounded-2xl shadow-sm"
-              style={{ background: "rgba(255,255,255,0.97)" }}
-            >
-              <button
-                type="button"
-                className="flex w-full items-center justify-between gap-4 px-6 py-4 text-left"
-                onClick={() => toggle(cat)}
-                aria-expanded={isOpen}
-                data-ocid={`city-guide-cat-${cat.toLowerCase().replace(/\s+/g, "-")}`}
-                style={{ border: "none", background: "none" }}
+      {visible.length === 0 ? (
+        <motion.div
+          initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4 }}
+          className="rounded-2xl px-8 py-12 text-center shadow-sm"
+          style={{ background: "rgba(255,255,255,0.97)" }}
+          data-ocid="city-guide.empty_state"
+        >
+          <BookOpen
+            className="mx-auto mb-4 h-10 w-10 opacity-30"
+            style={{ color: accentColor }}
+          />
+          <p
+            className="font-serif text-xl font-light opacity-50"
+            style={{ color: headerTextColor }}
+          >
+            City guide coming soon
+          </p>
+          <p className="mt-2 text-sm opacity-40" style={{ color: textColor }}>
+            Our curated recommendations will be available here shortly.
+          </p>
+        </motion.div>
+      ) : (
+        <div className="space-y-3">
+          {Object.entries(grouped).map(([cat, items], catIdx) => {
+            const isOpen = openCats.has(cat);
+            const CatIcon = categoryIconMap[cat] ?? Compass;
+            const catColor = categoryColorMap[cat] ?? accentColor;
+            return (
+              <motion.div
+                key={cat}
+                initial={
+                  shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }
+                }
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{
+                  delay: catIdx * 0.07,
+                  duration: 0.4,
+                  ease: "easeInOut",
+                }}
+                className="overflow-hidden rounded-2xl shadow-sm"
+                style={{ background: "rgba(255,255,255,0.97)" }}
               >
-                <div className="flex items-center gap-3">
-                  <div
-                    className="flex h-9 w-9 items-center justify-center rounded-full"
-                    style={{ backgroundColor: `${catColor}18` }}
-                  >
-                    <CatIcon className="h-5 w-5" style={{ color: catColor }} />
-                  </div>
-                  <span
-                    className="font-serif text-xl font-light"
-                    style={{ color: headerTextColor }}
-                  >
-                    {cat}
-                  </span>
-                  <span
-                    className="text-sm opacity-50"
-                    style={{ color: textColor }}
-                  >
-                    ({items.length})
-                  </span>
-                </div>
-                <motion.div
-                  animate={{ rotate: isOpen ? 180 : 0 }}
-                  transition={{ duration: 0.3 }}
+                <button
+                  type="button"
+                  className="flex w-full items-center justify-between gap-4 px-6 py-4 text-left"
+                  onClick={() => toggle(cat)}
+                  aria-expanded={isOpen}
+                  data-ocid={`city-guide-cat-${cat.toLowerCase().replace(/\s+/g, "-")}`}
+                  style={{ border: "none", background: "none" }}
                 >
-                  <ChevronDown
-                    className="h-5 w-5"
-                    style={{ color: catColor }}
-                  />
-                </motion.div>
-              </button>
-
-              <AnimatePresence initial={false}>
-                {isOpen && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-                    className="overflow-hidden"
-                  >
-                    <div className="grid gap-4 px-6 pb-6 pt-2 sm:grid-cols-2 lg:grid-cols-3">
-                      {items.map((entry, ei) => (
-                        <CityGuideEntryCard
-                          key={entry.id}
-                          entry={entry}
-                          catColor={catColor}
-                          headerTextColor={headerTextColor}
-                          textColor={textColor}
-                          delay={ei * 0.06}
-                        />
-                      ))}
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="flex h-9 w-9 items-center justify-center rounded-full"
+                      style={{ backgroundColor: `${catColor}18` }}
+                    >
+                      <CatIcon
+                        className="h-5 w-5"
+                        style={{ color: catColor }}
+                      />
                     </div>
+                    <span
+                      className="font-serif text-xl font-light"
+                      style={{ color: headerTextColor }}
+                    >
+                      {cat}
+                    </span>
+                    <span
+                      className="text-sm opacity-50"
+                      style={{ color: textColor }}
+                    >
+                      ({items.length})
+                    </span>
+                  </div>
+                  <motion.div
+                    animate={{ rotate: isOpen ? 180 : 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <ChevronDown
+                      className="h-5 w-5"
+                      style={{ color: catColor }}
+                    />
                   </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
-          );
-        })}
-      </div>
+                </button>
+
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+                      className="overflow-hidden"
+                    >
+                      <div className="grid gap-4 px-6 pb-6 pt-2 sm:grid-cols-2 lg:grid-cols-3">
+                        {items.map((entry, ei) => (
+                          <CityGuideEntryCard
+                            key={entry.id}
+                            entry={entry}
+                            catColor={catColor}
+                            headerTextColor={headerTextColor}
+                            textColor={textColor}
+                            delay={ei * 0.06}
+                          />
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            );
+          })}
+        </div>
+      )}
     </motion.section>
   );
 }
@@ -1408,7 +1463,7 @@ export default function ExperiencePage() {
             />
           </ParallaxPanel>
 
-          {/* City Guide PDF Viewer */}
+          {/* City Guide PDF Viewer — shown whenever a PDF key exists */}
           {cityGuidePdfKey && (
             <CityGuidePdfSection
               pdfKey={cityGuidePdfKey}

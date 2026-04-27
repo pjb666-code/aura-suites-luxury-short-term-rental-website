@@ -1,5 +1,5 @@
-import { u as useNavigate, g as useLiveArtists, h as useLiveArtworks, b as useLiveSiteConfig, r as reactExports, j as jsxRuntimeExports, H as Header, I as Input, T as Tabs, i as TabsList, k as TabsTrigger, l as TabsContent, e as Card, f as CardContent, F as Footer, A as ArrowRight, B as Badge } from "./index-Bi4BquR6.js";
-import { S as Search } from "./search-ewAVo3sy.js";
+import { u as useNavigate, g as useLiveArtists, h as useLiveArtworks, b as useLiveSiteConfig, r as reactExports, j as jsxRuntimeExports, H as Header, I as Input, T as Tabs, i as TabsList, k as TabsTrigger, l as TabsContent, e as Card, f as CardContent, F as Footer, A as ArrowRight, B as Badge } from "./index-BRLY7AmW.js";
+import { S as Search } from "./search-DOSaG4aJ.js";
 function AuraCollectionPage() {
   const navigate = useNavigate();
   const { data: artists, isLoading: loadingArtists } = useLiveArtists();

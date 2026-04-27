@@ -1,7 +1,7 @@
-import { m as createLucideIcon, u as useNavigate, c as useParams, h as useLiveArtworks, g as useLiveArtists, b as useLiveSiteConfig, r as reactExports, j as jsxRuntimeExports, H as Header, F as Footer, d as Button, B as Badge, n as ChevronRight, o as Mail, e as Card, f as CardContent } from "./index-Bi4BquR6.js";
-import { Z as ZoomIn, L as Lightbox } from "./Lightbox-Sig8ir1g.js";
-import { A as ArrowLeft } from "./arrow-left-DYM9eIsd.js";
-import { C as ChevronLeft } from "./index-DlwXwOOc.js";
+import { m as createLucideIcon, u as useNavigate, c as useParams, h as useLiveArtworks, g as useLiveArtists, b as useLiveSiteConfig, r as reactExports, j as jsxRuntimeExports, H as Header, F as Footer, d as Button, B as Badge, n as ChevronRight, o as Mail, e as Card, f as CardContent } from "./index-BRLY7AmW.js";
+import { Z as ZoomIn, L as Lightbox } from "./Lightbox-CgfOEg6S.js";
+import { A as ArrowLeft } from "./arrow-left-DMCjJGpw.js";
+import { C as ChevronLeft } from "./index-B39T_luR.js";
 /**
  * @license lucide-react v0.511.0 - ISC
  *

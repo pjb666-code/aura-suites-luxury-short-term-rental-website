@@ -1,7 +1,7 @@
-import { u as useNavigate, c as useParams, g as useLiveArtists, h as useLiveArtworks, b as useLiveSiteConfig, r as reactExports, j as jsxRuntimeExports, H as Header, F as Footer, d as Button, n as ChevronRight, B as Badge, o as Mail, e as Card, f as CardContent } from "./index-Bi4BquR6.js";
-import { Z as ZoomIn, L as Lightbox } from "./Lightbox-Sig8ir1g.js";
-import { A as ArrowLeft } from "./arrow-left-DYM9eIsd.js";
-import { C as ChevronLeft } from "./index-DlwXwOOc.js";
+import { u as useNavigate, c as useParams, g as useLiveArtists, h as useLiveArtworks, b as useLiveSiteConfig, r as reactExports, j as jsxRuntimeExports, H as Header, F as Footer, d as Button, n as ChevronRight, B as Badge, o as Mail, e as Card, f as CardContent } from "./index-BRLY7AmW.js";
+import { Z as ZoomIn, L as Lightbox } from "./Lightbox-CgfOEg6S.js";
+import { A as ArrowLeft } from "./arrow-left-DMCjJGpw.js";
+import { C as ChevronLeft } from "./index-B39T_luR.js";
 function ArtistDetailPage() {
   const navigate = useNavigate();
   const { artistId } = useParams({ from: "/artists/$artistId" });

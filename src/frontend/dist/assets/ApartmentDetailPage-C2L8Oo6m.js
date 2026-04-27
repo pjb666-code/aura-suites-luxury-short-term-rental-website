@@ -1,7 +1,7 @@
-import { u as useNavigate, c as useParams, a as useLiveApartments, b as useLiveSiteConfig, r as reactExports, j as jsxRuntimeExports, H as Header, F as Footer, d as Button, B as Badge, M as MapPin, C as Check, E as ExternalLink, e as Card, f as CardContent } from "./index-Bi4BquR6.js";
-import { Z as ZoomIn, L as Lightbox } from "./Lightbox-Sig8ir1g.js";
-import { A as ArrowLeft } from "./arrow-left-DYM9eIsd.js";
-import "./index-DlwXwOOc.js";
+import { u as useNavigate, c as useParams, a as useLiveApartments, b as useLiveSiteConfig, r as reactExports, j as jsxRuntimeExports, H as Header, F as Footer, d as Button, B as Badge, M as MapPin, C as Check, E as ExternalLink, e as Card, f as CardContent } from "./index-BRLY7AmW.js";
+import { Z as ZoomIn, L as Lightbox } from "./Lightbox-CgfOEg6S.js";
+import { A as ArrowLeft } from "./arrow-left-DMCjJGpw.js";
+import "./index-B39T_luR.js";
 function ApartmentDetailPage() {
   const navigate = useNavigate();
   const { apartmentId } = useParams({ from: "/apartments/$apartmentId" });

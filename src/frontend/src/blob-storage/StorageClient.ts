@@ -466,6 +466,7 @@ export class StorageClient {
     const fileHeaders: Headers = {
       "Content-Type": "application/octet-stream",
       "Content-Length": file.size.toString(),
+      "Content-Disposition": `inline; filename="file"`,
     };
 
     const { chunks, chunkHashes, blobHashTree } =

@@ -8,6 +8,8 @@ import {
   useListLiveMapMarkers,
   useLiveSiteConfig,
 } from "@/hooks/useQueries";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
 import {
   Award,
   BookOpen,
@@ -37,9 +39,28 @@ import {
   useScroll,
   useTransform,
 } from "motion/react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { CircleMarker, MapContainer, Popup, TileLayer } from "react-leaflet";
+import { Document, Page, pdfjs } from "react-pdf";
+import "react-pdf/dist/Page/AnnotationLayer.css";
+import "react-pdf/dist/Page/TextLayer.css";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
+
+// Fix leaflet default marker icons (known webpack/vite issue)
+const iconDefault = L.Icon.Default.prototype as L.Icon.Default & {
+  _getIconUrl?: unknown;
+};
+iconDefault._getIconUrl = undefined;
+L.Icon.Default.mergeOptions({
+  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+  iconRetinaUrl:
+    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+});
+
+// Set up the PDF.js worker
+pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.mjs`;
 
 // ─── Icon maps ────────────────────────────────────────────────────────────────
 
@@ -467,23 +488,6 @@ function ParallaxPanel({
 
 // ─── Map Section ──────────────────────────────────────────────────────────────
 
-const PALERMO_LAT = -34.5875;
-const PALERMO_LNG = -58.4227;
-const PALERMO_ZOOM = 14;
-
-function toPixel(
-  lat: number,
-  lng: number,
-  containerW: number,
-  containerH: number,
-): { x: number; y: number } {
-  const latRange: [number, number] = [PALERMO_LAT - 0.025, PALERMO_LAT + 0.025];
-  const lngRange: [number, number] = [PALERMO_LNG - 0.04, PALERMO_LNG + 0.04];
-  const x = ((lng - lngRange[0]) / (lngRange[1] - lngRange[0])) * containerW;
-  const y = ((latRange[1] - lat) / (latRange[1] - latRange[0])) * containerH;
-  return { x, y };
-}
-
 function MapSection({
   markers,
   accentColor,
@@ -495,27 +499,7 @@ function MapSection({
   textColor: string;
   headerTextColor: string;
 }) {
-  const [activeMarker, setActiveMarker] = useState<MapMarker | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [dims, setDims] = useState({ w: 800, h: 500 });
   const shouldReduceMotion = useReducedMotion();
-
-  useEffect(() => {
-    const update = () => {
-      if (containerRef.current) {
-        setDims({
-          w: containerRef.current.offsetWidth,
-          h: containerRef.current.offsetHeight,
-        });
-      }
-    };
-    update();
-    const ro = new ResizeObserver(update);
-    if (containerRef.current) ro.observe(containerRef.current);
-    return () => ro.disconnect();
-  }, []);
-
-  const mapUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${PALERMO_LNG - 0.04}%2C${PALERMO_LAT - 0.025}%2C${PALERMO_LNG + 0.04}%2C${PALERMO_LAT + 0.025}&layer=mapnik&zoom=${PALERMO_ZOOM}`;
   const visibleMarkers = markers.filter((m) => m.visible);
 
   return (
@@ -574,120 +558,50 @@ function MapSection({
         )}
       </div>
 
-      <div
-        ref={containerRef}
-        className="relative"
-        style={{ height: "clamp(320px, 45vw, 500px)" }}
-      >
-        <iframe
-          title="Palermo Hollywood Map"
-          src={mapUrl}
-          className="h-full w-full border-0"
-          loading="lazy"
-          allowFullScreen
-          style={{ filter: "sepia(8%) contrast(95%)" }}
-        />
-
-        {visibleMarkers.map((marker) => {
-          const { x, y } = toPixel(marker.lat, marker.lng, dims.w, dims.h);
-          const color = categoryColorMap[marker.category] ?? accentColor;
-          return (
-            <button
-              type="button"
-              key={marker.id}
-              className="absolute -translate-x-1/2 -translate-y-full"
-              style={{
-                left: x,
-                top: y,
-                zIndex: 10,
-                border: "none",
-                background: "none",
-                padding: 0,
-              }}
-              onClick={() =>
-                setActiveMarker(activeMarker?.id === marker.id ? null : marker)
-              }
-              aria-label={marker.name}
-            >
-              <motion.div
-                whileHover={shouldReduceMotion ? {} : { scale: 1.2 }}
-                className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white shadow-lg"
-                style={{ backgroundColor: color }}
+      <div style={{ height: "500px", width: "100%" }}>
+        <MapContainer
+          center={[-34.6037, -58.3816]}
+          zoom={14}
+          style={{ height: "500px", width: "100%" }}
+          scrollWheelZoom={false}
+        >
+          <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          />
+          {visibleMarkers.map((marker) => {
+            const color = categoryColorMap[marker.category] ?? accentColor;
+            return (
+              <CircleMarker
+                key={marker.id}
+                center={[marker.lat, marker.lng]}
+                radius={10}
+                pathOptions={{
+                  color: color,
+                  fillColor: color,
+                  fillOpacity: 0.8,
+                  weight: 2,
+                }}
               >
-                <span className="text-xs font-bold text-white">
-                  {marker.category.charAt(0)}
-                </span>
-              </motion.div>
-            </button>
-          );
-        })}
-
-        <AnimatePresence>
-          {activeMarker && (
-            <motion.div
-              key={activeMarker.id}
-              initial={{ opacity: 0, y: -8, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              className="absolute bottom-4 left-4 right-4 z-20 rounded-xl p-4 shadow-2xl md:left-auto md:right-4 md:w-72"
-              style={{ backgroundColor: "rgba(255,255,255,0.97)" }}
-            >
-              <div className="mb-2 flex items-start justify-between gap-2">
-                <div>
-                  <span
-                    className="mb-1 inline-block rounded-full px-2 py-0.5 text-xs font-medium"
-                    style={{
-                      backgroundColor: `${categoryColorMap[activeMarker.category] ?? accentColor}20`,
-                      color:
-                        categoryColorMap[activeMarker.category] ?? accentColor,
-                    }}
-                  >
-                    {activeMarker.category}
-                  </span>
-                  <h4
-                    className="font-serif text-lg font-medium leading-tight"
-                    style={{ color: headerTextColor }}
-                  >
-                    {activeMarker.name}
-                  </h4>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setActiveMarker(null)}
-                  className="shrink-0 rounded-full p-1 transition-colors hover:bg-black/5"
-                  aria-label="Close"
-                >
-                  <span className="text-lg leading-none opacity-50">×</span>
-                </button>
-              </div>
-              {activeMarker.address && (
-                <p
-                  className="mb-1 text-xs opacity-60"
-                  style={{ color: textColor }}
-                >
-                  {activeMarker.address}
-                </p>
-              )}
-              <p
-                className="text-sm leading-relaxed opacity-80"
-                style={{ color: textColor }}
-              >
-                {activeMarker.description}
-              </p>
-              {activeMarker.website && (
-                <a
-                  href={activeMarker.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-3 inline-flex items-center gap-1 text-xs font-medium transition-opacity hover:opacity-70"
-                  style={{ color: accentColor }}
-                >
-                  Visit website <ExternalLink className="h-3 w-3" />
-                </a>
-              )}
-            </motion.div>
-          )}
-        </AnimatePresence>
+                <Popup>
+                  <strong>{marker.name}</strong>
+                  {marker.description && (
+                    <>
+                      <br />
+                      {marker.description}
+                    </>
+                  )}
+                  {marker.address && (
+                    <>
+                      <br />
+                      <em>{marker.address}</em>
+                    </>
+                  )}
+                </Popup>
+              </CircleMarker>
+            );
+          })}
+        </MapContainer>
       </div>
     </motion.div>
   );
@@ -716,22 +630,20 @@ function CityGuideEntryCard({
       initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.35 }}
-      className="overflow-hidden rounded-xl border"
+      className="flex items-start gap-3 overflow-hidden rounded-xl border p-4"
       style={{ borderColor: `${catColor}20` }}
     >
       {imageUrl && (
-        <div className="aspect-video overflow-hidden">
-          <img
-            src={imageUrl}
-            alt={entry.title}
-            className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
-            loading="lazy"
-          />
-        </div>
+        <img
+          src={imageUrl}
+          alt={entry.title}
+          className="h-12 w-12 shrink-0 rounded-lg object-cover"
+          loading="lazy"
+        />
       )}
-      <div className="p-4">
+      <div className="min-w-0 flex-1">
         <h4
-          className="mb-1 font-serif text-base font-medium"
+          className="mb-1 font-serif text-base font-medium leading-tight"
           style={{ color: headerTextColor }}
         >
           {entry.title}
@@ -758,121 +670,264 @@ function CityGuideEntryCard({
   );
 }
 
-// ─── City Guide PDF Section ───────────────────────────────────────────────────
+// ─── City Guide PDF Viewer (react-pdf) ───────────────────────────────────────
 
-function CityGuidePdfSection({
+function CityGuidePdfViewer({
+  pdfUrl,
+  accentColor,
+  textColor,
+}: {
+  pdfUrl: string;
+  accentColor: string;
+  textColor: string;
+}) {
+  const [numPages, setNumPages] = useState<number>(0);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = useState(800);
+
+  useEffect(() => {
+    const update = () => {
+      if (containerRef.current) {
+        setContainerWidth(containerRef.current.offsetWidth);
+      }
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    if (containerRef.current) ro.observe(containerRef.current);
+    return () => ro.disconnect();
+  }, []);
+
+  const onLoadSuccess = useCallback(({ numPages: n }: { numPages: number }) => {
+    setNumPages(n);
+    setIsLoading(false);
+  }, []);
+  const onLoadError = useCallback(() => {
+    setHasError(true);
+    setIsLoading(false);
+  }, []);
+
+  if (hasError) {
+    return (
+      <div className="flex flex-col items-center gap-4 py-12">
+        <p className="text-sm opacity-60" style={{ color: textColor }}>
+          Unable to display PDF in browser.
+        </p>
+        <a
+          href={pdfUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium transition-opacity hover:opacity-80"
+          style={{
+            backgroundColor: `${accentColor}18`,
+            color: accentColor,
+            border: `1px solid ${accentColor}40`,
+          }}
+        >
+          <ExternalLink className="h-4 w-4" />
+          Open PDF
+        </a>
+      </div>
+    );
+  }
+
+  return (
+    <div ref={containerRef} className="w-full">
+      {isLoading && (
+        <div
+          className="flex h-48 items-center justify-center rounded-xl"
+          style={{ backgroundColor: `${accentColor}08` }}
+        >
+          <Loader2
+            className="h-8 w-8 animate-spin"
+            style={{ color: accentColor }}
+          />
+        </div>
+      )}
+      <div
+        className={
+          isLoading
+            ? "opacity-0 transition-opacity duration-200 ease-in-out"
+            : "opacity-100 transition-opacity duration-200 ease-in-out"
+        }
+      >
+        <div
+          style={{ minHeight: "600px" }}
+          className="overflow-hidden relative"
+        >
+          <Document
+            file={pdfUrl}
+            onLoadSuccess={onLoadSuccess}
+            onLoadError={onLoadError}
+            loading={null}
+          >
+            <Page
+              pageNumber={pageNumber}
+              width={containerWidth}
+              renderMode="canvas"
+              renderAnnotationLayer
+              renderTextLayer
+              loading={
+                <div className="flex justify-center py-8">
+                  <Loader2 className="animate-spin h-8 w-8 text-gray-400" />
+                </div>
+              }
+            />
+            {pageNumber < numPages && (
+              <Page
+                pageNumber={pageNumber + 1}
+                width={containerWidth}
+                renderMode="canvas"
+                className="hidden"
+              />
+            )}
+          </Document>
+        </div>
+        {numPages > 1 && (
+          <div className="mt-4 flex items-center justify-center gap-4">
+            <button
+              type="button"
+              onClick={() => setPageNumber((p) => Math.max(1, p - 1))}
+              disabled={pageNumber <= 1}
+              className="flex h-8 w-8 items-center justify-center rounded-full border transition-opacity disabled:opacity-30 hover:opacity-70"
+              style={{ borderColor: `${accentColor}40`, color: accentColor }}
+              aria-label="Previous page"
+              data-ocid="city-guide-pdf-prev"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <span className="text-sm opacity-60" style={{ color: textColor }}>
+              Page {pageNumber} of {numPages}
+            </span>
+            <button
+              type="button"
+              onClick={() => setPageNumber((p) => Math.min(numPages, p + 1))}
+              disabled={pageNumber >= numPages}
+              className="flex h-8 w-8 items-center justify-center rounded-full border transition-opacity disabled:opacity-30 hover:opacity-70"
+              style={{ borderColor: `${accentColor}40`, color: accentColor }}
+              aria-label="Next page"
+              data-ocid="city-guide-pdf-next"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ─── City Guide PDF in Accordion ─────────────────────────────────────────────
+
+function CityGuidePdfInAccordion({
   pdfKey,
   accentColor,
-  headerTextColor,
   textColor,
+  headerTextColor,
 }: {
   pdfKey: string;
   accentColor: string;
-  headerTextColor: string;
   textColor: string;
+  headerTextColor: string;
 }) {
   const { data: pdfUrl, isLoading } = useFileUrl(pdfKey);
-  const shouldReduceMotion = useReducedMotion();
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  const handleDownload = async () => {
+    if (!pdfUrl) return;
+    setIsDownloading(true);
+    try {
+      const res = await fetch(pdfUrl);
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "city-guide.pdf";
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (e) {
+      console.error("Download failed", e);
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
   if (!pdfUrl && !isLoading) return null;
 
   return (
-    <motion.section
-      initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.6, ease: "easeInOut" }}
-      className="overflow-hidden rounded-2xl shadow-xl"
-      data-ocid="city-guide-pdf"
-      style={{ background: "rgba(255,255,255,0.97)" }}
-    >
-      <div className="px-6 pb-4 pt-6">
-        <div className="mb-4 flex items-center gap-3">
-          <div
-            className="flex h-10 w-10 items-center justify-center rounded-full"
-            style={{ backgroundColor: `${accentColor}20` }}
-          >
-            <BookOpen className="h-5 w-5" style={{ color: accentColor }} />
-          </div>
-          <div>
-            <h2
-              className="font-serif text-2xl font-light"
-              style={{ color: headerTextColor }}
-            >
-              Buenos Aires City Guide
-            </h2>
-            <p className="text-sm opacity-70" style={{ color: textColor }}>
-              Our curated guide to exploring the city
-            </p>
-          </div>
-        </div>
+    <div className="px-6 pb-8 pt-2">
+      <div className="mb-3 flex items-center gap-2">
+        <BookOpen className="h-4 w-4" style={{ color: accentColor }} />
+        <span
+          className="font-serif text-lg font-light"
+          style={{ color: headerTextColor }}
+        >
+          City Guide PDF
+        </span>
+      </div>
+      {isLoading ? (
         <div
-          className="mb-4 h-0.5 w-16"
-          style={{ backgroundColor: accentColor }}
-        />
-      </div>
-
-      <div className="px-6 pb-8">
-        {isLoading ? (
+          className="flex h-32 items-center justify-center rounded-xl"
+          style={{ backgroundColor: `${accentColor}08` }}
+        >
+          <Loader2
+            className="h-6 w-6 animate-spin"
+            style={{ color: accentColor }}
+          />
+        </div>
+      ) : pdfUrl ? (
+        <>
           <div
-            className="flex h-[500px] items-center justify-center rounded-xl"
-            style={{ backgroundColor: `${accentColor}08` }}
+            className="w-full overflow-hidden rounded-xl border shadow-md"
+            style={{ borderColor: `${accentColor}20` }}
+            data-ocid="city-guide-pdf-viewer"
           >
-            <div className="text-center">
-              <Loader2
-                className="mx-auto mb-2 h-8 w-8 animate-spin"
-                style={{ color: accentColor }}
-              />
-              <p className="text-sm opacity-60" style={{ color: textColor }}>
-                Loading city guide…
-              </p>
-            </div>
+            <CityGuidePdfViewer
+              pdfUrl={pdfUrl}
+              accentColor={accentColor}
+              textColor={textColor}
+            />
           </div>
-        ) : pdfUrl ? (
-          <>
-            <div
-              className="w-full overflow-hidden rounded-xl border shadow-lg"
-              style={{ height: "700px", borderColor: `${accentColor}20` }}
+          <div className="mt-4 flex items-center justify-center gap-3">
+            <button
+              type="button"
+              onClick={handleDownload}
+              disabled={isDownloading}
+              className="inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium transition-opacity hover:opacity-80 disabled:opacity-60"
+              style={{
+                backgroundColor: `${accentColor}18`,
+                color: accentColor,
+                border: `1px solid ${accentColor}40`,
+              }}
+              data-ocid="city-guide-pdf-download"
             >
-              <object
-                data={pdfUrl}
-                type="application/pdf"
-                width="100%"
-                height="100%"
-                aria-label="City Guide PDF"
-                data-ocid="city-guide-pdf-viewer"
-              >
-                <iframe
-                  src={`https://docs.google.com/gviewer?embedded=true&url=${encodeURIComponent(pdfUrl)}`}
-                  width="100%"
-                  height="100%"
-                  style={{ border: "none" }}
-                  title="City Guide PDF"
-                />
-              </object>
-            </div>
-            <div className="mt-4 flex justify-center">
-              <a
-                href={pdfUrl}
-                download
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium transition-opacity hover:opacity-80"
-                style={{
-                  backgroundColor: `${accentColor}18`,
-                  color: accentColor,
-                  border: `1px solid ${accentColor}40`,
-                }}
-                data-ocid="city-guide-pdf-download"
-              >
+              {isDownloading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
                 <BookOpen className="h-4 w-4" />
-                Download City Guide
-              </a>
-            </div>
-          </>
-        ) : null}
-      </div>
-    </motion.section>
+              )}
+              Download City Guide
+            </button>
+            <a
+              href={pdfUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Open in new tab"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-lg border transition-opacity hover:opacity-70"
+              style={{
+                borderColor: `${accentColor}40`,
+                color: accentColor,
+              }}
+              data-ocid="city-guide-pdf-open-tab"
+            >
+              <ExternalLink className="h-4 w-4" />
+            </a>
+          </div>
+        </>
+      ) : null}
+    </div>
   );
 }
 
@@ -1030,7 +1085,7 @@ function CityGuideSection({
                       transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
                       className="overflow-hidden"
                     >
-                      <div className="grid gap-4 px-6 pb-6 pt-2 sm:grid-cols-2 lg:grid-cols-3">
+                      <div className="flex flex-col gap-3 px-6 pb-6 pt-2 sm:grid-cols-2">
                         {items.map((entry, ei) => (
                           <CityGuideEntryCard
                             key={entry.id}
@@ -1042,6 +1097,14 @@ function CityGuideSection({
                           />
                         ))}
                       </div>
+                      {items.some((e) => e.pdfKey) && (
+                        <CityGuidePdfInAccordion
+                          pdfKey={items.find((e) => e.pdfKey)!.pdfKey!}
+                          accentColor={accentColor}
+                          textColor={textColor}
+                          headerTextColor={headerTextColor}
+                        />
+                      )}
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -1309,16 +1372,12 @@ export default function ExperiencePage() {
     return sorted.length > 0 ? sorted : DEFAULT_SECTIONS;
   }, [siteConfig]);
 
-  const cityGuidePdfKey = useMemo(
-    () => cityGuideEntries.find((e) => e.pdfKey)?.pdfKey ?? "",
-    [cityGuideEntries],
-  );
-
   const defaultImage = "/assets/generated/hero-apartment-interior.jpg";
   const heroImage =
     siteConfig?.experiencePage?.backgroundImage ||
     siteConfig?.defaultExperienceImage ||
     "/assets/generated/cultural-district-street.jpg";
+  const { data: heroImageUrl } = useFileUrl(heroImage ?? "");
   const title = siteConfig?.experiencePage?.title || "The Aura Experience";
   const description =
     siteConfig?.experiencePage?.description ||
@@ -1365,7 +1424,7 @@ export default function ExperiencePage() {
         <ParallaxHero
           title={title}
           description={description}
-          backgroundImage={heroImage}
+          backgroundImage={heroImageUrl ?? heroImage}
           accentColor={accentColor}
         />
 
@@ -1462,16 +1521,6 @@ export default function ExperiencePage() {
               headerTextColor={headerTextColor}
             />
           </ParallaxPanel>
-
-          {/* City Guide PDF Viewer — shown whenever a PDF key exists */}
-          {cityGuidePdfKey && (
-            <CityGuidePdfSection
-              pdfKey={cityGuidePdfKey}
-              accentColor={accentColor}
-              headerTextColor={headerTextColor}
-              textColor={textColor}
-            />
-          )}
 
           {/* Exclusive Services */}
           <ExclusiveServicesSection

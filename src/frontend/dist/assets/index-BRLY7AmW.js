@@ -1,4 +1,4 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/ApartmentsPage-fgBtmBMn.js","assets/search-ewAVo3sy.js","assets/ApartmentDetailPage-N1Iu-K3y.js","assets/Lightbox-Sig8ir1g.js","assets/index-DlwXwOOc.js","assets/arrow-left-DYM9eIsd.js","assets/AuraCollectionPage-CKwg4fwu.js","assets/ArtistDetailPage-BAy407OD.js","assets/ArtworkDetailPage-B34GiOrX.js","assets/ExperiencePage-BxA2KeLt.js","assets/ImprintPage-BRfTCixi.js","assets/PrivacyPolicyPage-DYobHzBM.js","assets/TermsPage-0fxB6D09.js"])))=>i.map(i=>d[i]);
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/ApartmentsPage-D6qPT97x.js","assets/search-DOSaG4aJ.js","assets/ApartmentDetailPage-C2L8Oo6m.js","assets/Lightbox-CgfOEg6S.js","assets/index-B39T_luR.js","assets/arrow-left-DMCjJGpw.js","assets/AuraCollectionPage-9_3geufg.js","assets/ArtistDetailPage-C7xd4vBW.js","assets/ArtworkDetailPage-DuLAS25l.js","assets/ExperiencePage-BFpN7tNK.js","assets/ExperiencePage-B_bYY_AH.css","assets/ImprintPage-Cmfv97mb.js","assets/PrivacyPolicyPage-I4IY1Ajc.js","assets/TermsPage-oXwfDZka.js"])))=>i.map(i=>d[i]);
 var __defProp = Object.defineProperty;
 var __typeError = (msg) => {
   throw TypeError(msg);
@@ -75,6 +75,7 @@ function _mergeNamespaces(n, m2) {
     fetch(link.href, fetchOpts);
   }
 })();
+var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
 function getDefaultExportFromCjs(x3) {
   return x3 && x3.__esModule && Object.prototype.hasOwnProperty.call(x3, "default") ? x3["default"] : x3;
 }
@@ -40413,7 +40414,8 @@ class StorageClient2 {
     };
     const fileHeaders = {
       "Content-Type": "application/octet-stream",
-      "Content-Length": file.size.toString()
+      "Content-Length": file.size.toString(),
+      "Content-Disposition": `inline; filename="file"`
     };
     const { chunks, chunkHashes, blobHashTree } = await this.processFileForUpload(file, fileHeaders);
     const blobRootHash = blobHashTree.tree.hash;
@@ -66494,15 +66496,15 @@ function HomePage() {
     /* @__PURE__ */ jsxRuntimeExports.jsx(Footer, {})
   ] });
 }
-const ApartmentsPage = reactExports.lazy(() => __vitePreload(() => import("./ApartmentsPage-fgBtmBMn.js"), true ? __vite__mapDeps([0,1]) : void 0));
-const ApartmentDetailPage = reactExports.lazy(() => __vitePreload(() => import("./ApartmentDetailPage-N1Iu-K3y.js"), true ? __vite__mapDeps([2,3,4,5]) : void 0));
-const AuraCollectionPage = reactExports.lazy(() => __vitePreload(() => import("./AuraCollectionPage-CKwg4fwu.js"), true ? __vite__mapDeps([6,1]) : void 0));
-const ArtistDetailPage = reactExports.lazy(() => __vitePreload(() => import("./ArtistDetailPage-BAy407OD.js"), true ? __vite__mapDeps([7,3,4,5]) : void 0));
-const ArtworkDetailPage = reactExports.lazy(() => __vitePreload(() => import("./ArtworkDetailPage-B34GiOrX.js"), true ? __vite__mapDeps([8,3,4,5]) : void 0));
-const ExperiencePage = reactExports.lazy(() => __vitePreload(() => import("./ExperiencePage-BxA2KeLt.js"), true ? __vite__mapDeps([9,4]) : void 0));
-const ImprintPage = reactExports.lazy(() => __vitePreload(() => import("./ImprintPage-BRfTCixi.js"), true ? __vite__mapDeps([10,5]) : void 0));
-const PrivacyPolicyPage = reactExports.lazy(() => __vitePreload(() => import("./PrivacyPolicyPage-DYobHzBM.js"), true ? __vite__mapDeps([11,5]) : void 0));
-const TermsPage = reactExports.lazy(() => __vitePreload(() => import("./TermsPage-0fxB6D09.js"), true ? __vite__mapDeps([12,5]) : void 0));
+const ApartmentsPage = reactExports.lazy(() => __vitePreload(() => import("./ApartmentsPage-D6qPT97x.js"), true ? __vite__mapDeps([0,1]) : void 0));
+const ApartmentDetailPage = reactExports.lazy(() => __vitePreload(() => import("./ApartmentDetailPage-C2L8Oo6m.js"), true ? __vite__mapDeps([2,3,4,5]) : void 0));
+const AuraCollectionPage = reactExports.lazy(() => __vitePreload(() => import("./AuraCollectionPage-9_3geufg.js"), true ? __vite__mapDeps([6,1]) : void 0));
+const ArtistDetailPage = reactExports.lazy(() => __vitePreload(() => import("./ArtistDetailPage-C7xd4vBW.js"), true ? __vite__mapDeps([7,3,4,5]) : void 0));
+const ArtworkDetailPage = reactExports.lazy(() => __vitePreload(() => import("./ArtworkDetailPage-DuLAS25l.js"), true ? __vite__mapDeps([8,3,4,5]) : void 0));
+const ExperiencePage = reactExports.lazy(() => __vitePreload(() => import("./ExperiencePage-BFpN7tNK.js"), true ? __vite__mapDeps([9,4,10]) : void 0));
+const ImprintPage = reactExports.lazy(() => __vitePreload(() => import("./ImprintPage-Cmfv97mb.js"), true ? __vite__mapDeps([11,5]) : void 0));
+const PrivacyPolicyPage = reactExports.lazy(() => __vitePreload(() => import("./PrivacyPolicyPage-I4IY1Ajc.js"), true ? __vite__mapDeps([12,5]) : void 0));
+const TermsPage = reactExports.lazy(() => __vitePreload(() => import("./TermsPage-oXwfDZka.js"), true ? __vite__mapDeps([13,5]) : void 0));
 const queryClient$1 = new QueryClient();
 function PageLoader() {
   return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex min-h-screen items-center justify-center bg-background", children: /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "h-8 w-8 animate-spin text-luxury-gold" }) });
@@ -66607,7 +66609,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   /* @__PURE__ */ jsxRuntimeExports.jsx(QueryClientProvider, { client: queryClient, children: /* @__PURE__ */ jsxRuntimeExports.jsx(InternetIdentityProvider, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(App, {}) }) })
 );
 export {
-  Music as $,
+  clsx as $,
   ArrowRight as A,
   Badge as B,
   Check as C,
@@ -66628,29 +66630,36 @@ export {
   MotionConfigContext as R,
   collectMotionValues as S,
   Tabs as T,
-  useListLiveMapMarkers as U,
-  useListLiveCityGuideEntries as V,
-  useListLiveExclusiveServices as W,
+  commonjsGlobal as U,
+  getDefaultExportFromCjs as V,
+  React$4 as W,
   X,
-  useReducedMotion as Y,
-  Sparkles as Z,
-  Utensils as _,
+  reactDomExports as Y,
+  invariant$1 as Z,
+  __vitePreload as _,
   useLiveApartments as a,
-  Heart as a0,
-  Star as a1,
-  ChevronDown as a2,
-  BookOpen as a3,
-  Compass as a4,
-  Palette as a5,
-  useFileUrl as a6,
-  LoaderCircle as a7,
-  PresenceContext as a8,
-  usePresence as a9,
-  LayoutGroupContext as aa,
-  useLiveImprintPage as ab,
-  Link as ac,
-  useLivePrivacyPolicyPage as ad,
-  useLiveTermsPage as ae,
+  useListLiveMapMarkers as a0,
+  useListLiveCityGuideEntries as a1,
+  useListLiveExclusiveServices as a2,
+  useReducedMotion as a3,
+  useFileUrl as a4,
+  Sparkles as a5,
+  Utensils as a6,
+  Music as a7,
+  Heart as a8,
+  Star as a9,
+  ChevronDown as aa,
+  BookOpen as ab,
+  Compass as ac,
+  Palette as ad,
+  LoaderCircle as ae,
+  PresenceContext as af,
+  usePresence as ag,
+  LayoutGroupContext as ah,
+  useLiveImprintPage as ai,
+  Link as aj,
+  useLivePrivacyPolicyPage as ak,
+  useLiveTermsPage as al,
   useLiveSiteConfig as b,
   useParams as c,
   Button as d,

@@ -1,5 +1,5 @@
-import { ae as useLiveTermsPage, j as jsxRuntimeExports, a7 as LoaderCircle, H as Header, ac as Link, F as Footer } from "./index-Bi4BquR6.js";
-import { A as ArrowLeft } from "./arrow-left-DYM9eIsd.js";
+import { al as useLiveTermsPage, j as jsxRuntimeExports, ae as LoaderCircle, H as Header, aj as Link, F as Footer } from "./index-BRLY7AmW.js";
+import { A as ArrowLeft } from "./arrow-left-DMCjJGpw.js";
 function TermsPage() {
   const { data: termsPage, isLoading } = useLiveTermsPage();
   if (isLoading) {

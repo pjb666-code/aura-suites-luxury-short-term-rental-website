@@ -1,5 +1,5 @@
-import { u as useNavigate, a as useLiveApartments, b as useLiveSiteConfig, r as reactExports, j as jsxRuntimeExports, H as Header, I as Input, B as Badge, A as ArrowRight, M as MapPin, C as Check, F as Footer } from "./index-Bi4BquR6.js";
-import { S as Search } from "./search-ewAVo3sy.js";
+import { u as useNavigate, a as useLiveApartments, b as useLiveSiteConfig, r as reactExports, j as jsxRuntimeExports, H as Header, I as Input, B as Badge, A as ArrowRight, M as MapPin, C as Check, F as Footer } from "./index-BRLY7AmW.js";
+import { S as Search } from "./search-DOSaG4aJ.js";
 function ApartmentsPage() {
   const navigate = useNavigate();
   const { data: apartments, isLoading } = useLiveApartments();

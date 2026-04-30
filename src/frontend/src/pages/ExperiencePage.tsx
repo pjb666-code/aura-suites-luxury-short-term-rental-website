@@ -40,7 +40,13 @@ import {
   useTransform,
 } from "motion/react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { CircleMarker, MapContainer, Popup, TileLayer } from "react-leaflet";
+import {
+  CircleMarker,
+  MapContainer,
+  Marker,
+  Popup,
+  TileLayer,
+} from "react-leaflet";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
@@ -486,6 +492,108 @@ function ParallaxPanel({
   );
 }
 
+// ─── Marker Image Resolver — one hook call per marker, avoids hook-in-loop ───
+
+function MarkerImageResolver({
+  marker,
+  position,
+  categoryColor,
+}: {
+  marker: MapMarker;
+  position: [number, number];
+  categoryColor: string;
+}) {
+  const { data: imageUrl } = useFileUrl(marker.imageKey ?? "");
+
+  const popup = (
+    <Popup>
+      {imageUrl && (
+        <img
+          src={imageUrl}
+          alt={marker.name}
+          style={{
+            width: 120,
+            height: 80,
+            objectFit: "cover",
+            borderRadius: 6,
+            marginBottom: 6,
+          }}
+        />
+      )}
+      <strong>{marker.name}</strong>
+      {marker.address && (
+        <>
+          <br />
+          <em style={{ fontSize: "0.85em" }}>{marker.address}</em>
+        </>
+      )}
+      {marker.website && (
+        <>
+          <br />
+          <a
+            href={marker.website}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ fontSize: "0.85em", color: categoryColor }}
+          >
+            Visit website
+          </a>
+        </>
+      )}
+    </Popup>
+  );
+
+  if (imageUrl) {
+    const icon = L.divIcon({
+      html: `<div style="width:40px;height:40px;border-radius:50%;border:2px solid ${categoryColor};background-image:url(${imageUrl});background-size:cover;background-position:center;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,0.3);"></div>`,
+      iconSize: [40, 40],
+      iconAnchor: [20, 20],
+      className: "",
+    });
+    return (
+      <Marker position={position} icon={icon}>
+        {popup}
+      </Marker>
+    );
+  }
+
+  return (
+    <CircleMarker
+      center={position}
+      radius={10}
+      pathOptions={{
+        color: categoryColor,
+        fillColor: categoryColor,
+        fillOpacity: 0.8,
+        weight: 2,
+      }}
+    >
+      <Popup>
+        <strong>{marker.name}</strong>
+        {marker.address && (
+          <>
+            <br />
+            <em style={{ fontSize: "0.85em" }}>{marker.address}</em>
+          </>
+        )}
+        {marker.website && (
+          <>
+            <br />
+            <a
+              href={marker.website}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ fontSize: "0.85em", color: categoryColor }}
+            >
+              Visit website
+            </a>
+          </>
+        )}
+      </Popup>
+    </CircleMarker>
+  );
+}
+
 // ─── Map Section ──────────────────────────────────────────────────────────────
 
 function MapSection({
@@ -560,8 +668,8 @@ function MapSection({
 
       <div style={{ height: "500px", width: "100%" }}>
         <MapContainer
-          center={[-34.6037, -58.3816]}
-          zoom={14}
+          center={[-34.595, -58.42]}
+          zoom={13}
           style={{ height: "500px", width: "100%" }}
           scrollWheelZoom={false}
         >
@@ -572,33 +680,12 @@ function MapSection({
           {visibleMarkers.map((marker) => {
             const color = categoryColorMap[marker.category] ?? accentColor;
             return (
-              <CircleMarker
+              <MarkerImageResolver
                 key={marker.id}
-                center={[marker.lat, marker.lng]}
-                radius={10}
-                pathOptions={{
-                  color: color,
-                  fillColor: color,
-                  fillOpacity: 0.8,
-                  weight: 2,
-                }}
-              >
-                <Popup>
-                  <strong>{marker.name}</strong>
-                  {marker.description && (
-                    <>
-                      <br />
-                      {marker.description}
-                    </>
-                  )}
-                  {marker.address && (
-                    <>
-                      <br />
-                      <em>{marker.address}</em>
-                    </>
-                  )}
-                </Popup>
-              </CircleMarker>
+                marker={marker}
+                position={[marker.lat, marker.lng]}
+                categoryColor={color}
+              />
             );
           })}
         </MapContainer>

@@ -1,4 +1,4 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/ApartmentsPage-D6qPT97x.js","assets/search-DOSaG4aJ.js","assets/ApartmentDetailPage-C2L8Oo6m.js","assets/Lightbox-CgfOEg6S.js","assets/index-B39T_luR.js","assets/arrow-left-DMCjJGpw.js","assets/AuraCollectionPage-9_3geufg.js","assets/ArtistDetailPage-C7xd4vBW.js","assets/ArtworkDetailPage-DuLAS25l.js","assets/ExperiencePage-BFpN7tNK.js","assets/ExperiencePage-B_bYY_AH.css","assets/ImprintPage-Cmfv97mb.js","assets/PrivacyPolicyPage-I4IY1Ajc.js","assets/TermsPage-oXwfDZka.js"])))=>i.map(i=>d[i]);
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/ApartmentsPage-CIuS9gsc.js","assets/search-s7f9_6Hk.js","assets/ApartmentDetailPage-DsKbXGgv.js","assets/Lightbox-BHncvDpd.js","assets/index-shJDc2OG.js","assets/arrow-left-CAdCZxYj.js","assets/AuraCollectionPage-DMSQfB8r.js","assets/ArtistDetailPage-DybVx4ZX.js","assets/ArtworkDetailPage-wNQGTrbG.js","assets/ExperiencePage-CcixTdAh.js","assets/ExperiencePage-B_bYY_AH.css","assets/ImprintPage-NINoi4FN.js","assets/PrivacyPolicyPage-C_QTPqvr.js","assets/TermsPage-Ct2Ob3z-.js"])))=>i.map(i=>d[i]);
 var __defProp = Object.defineProperty;
 var __typeError = (msg) => {
   throw TypeError(msg);
@@ -55325,6 +55325,61 @@ const emptyMarker = {
   imageKey: void 0,
   visible: true
 };
+function GeocodeLookup({
+  address,
+  onResult
+}) {
+  const [isGeocoding, setIsGeocoding] = reactExports.useState(false);
+  const [geocodeError, setGeocodeError] = reactExports.useState(null);
+  const handleGeocode = async () => {
+    const q2 = address.trim();
+    if (!q2) {
+      setGeocodeError("Please enter an address first.");
+      return;
+    }
+    setGeocodeError(null);
+    setIsGeocoding(true);
+    try {
+      const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q2)}&format=json&limit=1`;
+      const res = await fetch(url, {
+        headers: { "User-Agent": "AuraSuites/1.0" }
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      if (!data.length) {
+        setGeocodeError("No results found. Try a more specific address.");
+        return;
+      }
+      const lat = Math.round(Number.parseFloat(data[0].lat) * 1e6) / 1e6;
+      const lng = Math.round(Number.parseFloat(data[0].lon) * 1e6) / 1e6;
+      onResult(lat, lng);
+      ue.success(`Coordinates found: ${lat}, ${lng}`);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Request failed";
+      setGeocodeError(`Geocoding failed: ${msg}`);
+      ue.error(`Geocoding failed: ${msg}`);
+    } finally {
+      setIsGeocoding(false);
+    }
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "button",
+      {
+        type: "button",
+        onClick: handleGeocode,
+        disabled: isGeocoding,
+        className: "inline-flex items-center gap-2 rounded-md border border-[#e2e5eb] bg-[#f7f8fa] px-3 py-1.5 text-xs font-medium text-[#1a1d23] transition-colors hover:bg-luxury-gold/10 hover:border-luxury-gold/40 disabled:cursor-not-allowed disabled:opacity-60",
+        "data-ocid": "geocode-find-coordinates",
+        children: [
+          isGeocoding ? /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "h-3 w-3 animate-spin" }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "📍" }),
+          "Find Coordinates"
+        ]
+      }
+    ),
+    geocodeError && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs font-medium text-red-600 bg-red-50 border border-red-200 rounded px-2 py-1", children: geocodeError })
+  ] });
+}
 function MarkerFormFields({
   value,
   onChange,
@@ -55371,6 +55426,13 @@ function MarkerFormFields({
           onChange: (e) => onChange({ ...value, address: e.target.value }),
           placeholder: "e.g. Thames 2296, Palermo",
           className: "border-[#e2e5eb] bg-white text-[#1a1d23] placeholder:text-[#96a0b5]"
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        GeocodeLookup,
+        {
+          address: value.address,
+          onResult: (lat, lng) => onChange({ ...value, lat, lng })
         }
       )
     ] }),
@@ -66496,15 +66558,15 @@ function HomePage() {
     /* @__PURE__ */ jsxRuntimeExports.jsx(Footer, {})
   ] });
 }
-const ApartmentsPage = reactExports.lazy(() => __vitePreload(() => import("./ApartmentsPage-D6qPT97x.js"), true ? __vite__mapDeps([0,1]) : void 0));
-const ApartmentDetailPage = reactExports.lazy(() => __vitePreload(() => import("./ApartmentDetailPage-C2L8Oo6m.js"), true ? __vite__mapDeps([2,3,4,5]) : void 0));
-const AuraCollectionPage = reactExports.lazy(() => __vitePreload(() => import("./AuraCollectionPage-9_3geufg.js"), true ? __vite__mapDeps([6,1]) : void 0));
-const ArtistDetailPage = reactExports.lazy(() => __vitePreload(() => import("./ArtistDetailPage-C7xd4vBW.js"), true ? __vite__mapDeps([7,3,4,5]) : void 0));
-const ArtworkDetailPage = reactExports.lazy(() => __vitePreload(() => import("./ArtworkDetailPage-DuLAS25l.js"), true ? __vite__mapDeps([8,3,4,5]) : void 0));
-const ExperiencePage = reactExports.lazy(() => __vitePreload(() => import("./ExperiencePage-BFpN7tNK.js"), true ? __vite__mapDeps([9,4,10]) : void 0));
-const ImprintPage = reactExports.lazy(() => __vitePreload(() => import("./ImprintPage-Cmfv97mb.js"), true ? __vite__mapDeps([11,5]) : void 0));
-const PrivacyPolicyPage = reactExports.lazy(() => __vitePreload(() => import("./PrivacyPolicyPage-I4IY1Ajc.js"), true ? __vite__mapDeps([12,5]) : void 0));
-const TermsPage = reactExports.lazy(() => __vitePreload(() => import("./TermsPage-oXwfDZka.js"), true ? __vite__mapDeps([13,5]) : void 0));
+const ApartmentsPage = reactExports.lazy(() => __vitePreload(() => import("./ApartmentsPage-CIuS9gsc.js"), true ? __vite__mapDeps([0,1]) : void 0));
+const ApartmentDetailPage = reactExports.lazy(() => __vitePreload(() => import("./ApartmentDetailPage-DsKbXGgv.js"), true ? __vite__mapDeps([2,3,4,5]) : void 0));
+const AuraCollectionPage = reactExports.lazy(() => __vitePreload(() => import("./AuraCollectionPage-DMSQfB8r.js"), true ? __vite__mapDeps([6,1]) : void 0));
+const ArtistDetailPage = reactExports.lazy(() => __vitePreload(() => import("./ArtistDetailPage-DybVx4ZX.js"), true ? __vite__mapDeps([7,3,4,5]) : void 0));
+const ArtworkDetailPage = reactExports.lazy(() => __vitePreload(() => import("./ArtworkDetailPage-wNQGTrbG.js"), true ? __vite__mapDeps([8,3,4,5]) : void 0));
+const ExperiencePage = reactExports.lazy(() => __vitePreload(() => import("./ExperiencePage-CcixTdAh.js"), true ? __vite__mapDeps([9,4,10]) : void 0));
+const ImprintPage = reactExports.lazy(() => __vitePreload(() => import("./ImprintPage-NINoi4FN.js"), true ? __vite__mapDeps([11,5]) : void 0));
+const PrivacyPolicyPage = reactExports.lazy(() => __vitePreload(() => import("./PrivacyPolicyPage-C_QTPqvr.js"), true ? __vite__mapDeps([12,5]) : void 0));
+const TermsPage = reactExports.lazy(() => __vitePreload(() => import("./TermsPage-Ct2Ob3z-.js"), true ? __vite__mapDeps([13,5]) : void 0));
 const queryClient$1 = new QueryClient();
 function PageLoader() {
   return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex min-h-screen items-center justify-center bg-background", children: /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "h-8 w-8 animate-spin text-luxury-gold" }) });
@@ -66630,11 +66692,11 @@ export {
   MotionConfigContext as R,
   collectMotionValues as S,
   Tabs as T,
-  commonjsGlobal as U,
-  getDefaultExportFromCjs as V,
-  React$4 as W,
+  getDefaultExportFromCjs as U,
+  commonjsGlobal as V,
+  reactDomExports as W,
   X,
-  reactDomExports as Y,
+  React$4 as Y,
   invariant$1 as Z,
   __vitePreload as _,
   useLiveApartments as a,

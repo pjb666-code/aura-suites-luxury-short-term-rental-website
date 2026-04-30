@@ -1,52 +1,45 @@
-import { m as createLucideIcon, u as useNavigate, c as useParams, h as useLiveArtworks, g as useLiveArtists, b as useLiveSiteConfig, r as reactExports, j as jsxRuntimeExports, H as Header, F as Footer, d as Button, B as Badge, n as ChevronRight, o as Mail, e as Card, f as CardContent } from "./index-BRLY7AmW.js";
-import { Z as ZoomIn, L as Lightbox } from "./Lightbox-CgfOEg6S.js";
-import { A as ArrowLeft } from "./arrow-left-DMCjJGpw.js";
-import { C as ChevronLeft } from "./index-B39T_luR.js";
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode = [
-  ["path", { d: "M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2", key: "975kel" }],
-  ["circle", { cx: "12", cy: "7", r: "4", key: "17ys0d" }]
-];
-const User = createLucideIcon("user", __iconNode);
-function ArtworkDetailPage() {
+import { u as useNavigate, c as useParams, g as useLiveArtists, h as useLiveArtworks, b as useLiveSiteConfig, r as reactExports, j as jsxRuntimeExports, H as Header, F as Footer, d as Button, n as ChevronRight, B as Badge, o as Mail, e as Card, f as CardContent } from "./index-BAUmy9hG.js";
+import { Z as ZoomIn, L as Lightbox } from "./Lightbox-BHncvDpd.js";
+import { A as ArrowLeft } from "./arrow-left-CAdCZxYj.js";
+import { C as ChevronLeft } from "./index-shJDc2OG.js";
+function ArtistDetailPage() {
   const navigate = useNavigate();
-  const { artworkId } = useParams({ from: "/artworks/$artworkId" });
-  const { data: artworks, isLoading: loadingArtworks } = useLiveArtworks();
+  const { artistId } = useParams({ from: "/artists/$artistId" });
   const { data: artists, isLoading: loadingArtists } = useLiveArtists();
+  const { data: artworks, isLoading: loadingArtworks } = useLiveArtworks();
   const { data: siteConfig } = useLiveSiteConfig();
   const [currentImageIndex, setCurrentImageIndex] = reactExports.useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = reactExports.useState(false);
-  const artwork = artworks == null ? void 0 : artworks.find((a) => a.id === artworkId);
-  const artist = artists == null ? void 0 : artists.find((a) => a.id === (artwork == null ? void 0 : artwork.artistId));
-  const relatedArtworks = (artworks == null ? void 0 : artworks.filter((a) => a.id !== artworkId && a.artistId === (artwork == null ? void 0 : artwork.artistId)).slice(0, 3)) || [];
-  const otherArtworks = (artworks == null ? void 0 : artworks.filter((a) => a.id !== artworkId && a.artistId !== (artwork == null ? void 0 : artwork.artistId)).slice(0, 3)) || [];
+  const artist = artists == null ? void 0 : artists.find((a) => a.id === artistId);
+  const artistArtworks = (artworks == null ? void 0 : artworks.filter((artwork) => artwork.artistId === artistId)) || [];
+  const relatedArtists = (artists == null ? void 0 : artists.filter((a) => a.id !== artistId).slice(0, 3)) || [];
   const textColor = (siteConfig == null ? void 0 : siteConfig.textColor) || "#000000";
   const headerTextColor = (siteConfig == null ? void 0 : siteConfig.headerTextColor) || "#000000";
   const accentColor = (siteConfig == null ? void 0 : siteConfig.accentColor) || "#FFD700";
-  const backgroundColor = (siteConfig == null ? void 0 : siteConfig.artworkDetailPageBackgroundColor) || "#FFFFFF";
+  const backgroundColor = (siteConfig == null ? void 0 : siteConfig.artistDetailPageBackgroundColor) || "#FFFFFF";
+  const defaultArtistImage = reactExports.useMemo(() => {
+    if (siteConfig == null ? void 0 : siteConfig.defaultArtistImage)
+      return `/assets/${siteConfig.defaultArtistImage}`;
+    return "/assets/generated/artist-profile-studio.jpg";
+  }, [siteConfig == null ? void 0 : siteConfig.defaultArtistImage]);
   const defaultArtworkImage = reactExports.useMemo(() => {
     if (siteConfig == null ? void 0 : siteConfig.defaultArtworkImage)
       return `/assets/${siteConfig.defaultArtworkImage}`;
     return "/assets/generated/abstract-geometric-art.jpg";
   }, [siteConfig == null ? void 0 : siteConfig.defaultArtworkImage]);
   const galleryImages = reactExports.useMemo(() => {
-    if (!artwork) return [];
+    if (!artist) return [];
     const images = [];
-    if (artwork.photo) images.push(artwork.photo);
-    if (artwork.galleryImages && artwork.galleryImages.length > 0) {
-      images.push(...artwork.galleryImages);
+    if (artist.photo) images.push(artist.photo);
+    if (artist.galleryImages && artist.galleryImages.length > 0) {
+      images.push(...artist.galleryImages);
     }
-    if (images.length === 0) images.push(defaultArtworkImage);
+    if (images.length === 0) images.push(defaultArtistImage);
     return images;
-  }, [artwork, defaultArtworkImage]);
+  }, [artist, defaultArtistImage]);
   reactExports.useEffect(() => {
     setCurrentImageIndex(0);
-  }, [artworkId]);
+  }, [artistId]);
   reactExports.useEffect(() => {
     if (siteConfig) {
       document.body.style.backgroundColor = backgroundColor;
@@ -55,6 +48,7 @@ function ArtworkDetailPage() {
       document.body.style.backgroundColor = "";
     };
   }, [siteConfig, backgroundColor]);
+  const getArtworkImage = (artwork) => artwork.photo || defaultArtworkImage;
   const handlePreviousImage = () => {
     setCurrentImageIndex(
       (prev) => prev === 0 ? galleryImages.length - 1 : prev - 1
@@ -67,7 +61,7 @@ function ArtworkDetailPage() {
   };
   const getCurrentImageUrl = () => {
     const imagePath = galleryImages[currentImageIndex];
-    if (!imagePath) return defaultArtworkImage;
+    if (!imagePath) return defaultArtistImage;
     if (imagePath.startsWith("http") || imagePath.startsWith("/assets/"))
       return imagePath;
     return `/assets/${imagePath}`;
@@ -76,7 +70,7 @@ function ArtworkDetailPage() {
     if (img.startsWith("http") || img.startsWith("/assets/")) return img;
     return `/assets/${img}`;
   });
-  if (loadingArtworks || loadingArtists) {
+  if (loadingArtists || loadingArtworks) {
     return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(Header, {}),
       /* @__PURE__ */ jsxRuntimeExports.jsx("main", { className: "min-h-screen pt-24 pb-16", style: { backgroundColor }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "container mx-auto px-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "animate-pulse space-y-8", children: [
@@ -87,7 +81,7 @@ function ArtworkDetailPage() {
       /* @__PURE__ */ jsxRuntimeExports.jsx(Footer, {})
     ] });
   }
-  if (!artwork) {
+  if (!artist) {
     return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(Header, {}),
       /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -101,10 +95,10 @@ function ArtworkDetailPage() {
               {
                 className: "mb-4 font-serif text-4xl font-light",
                 style: { color: headerTextColor },
-                children: "Artwork Not Found"
+                children: "Artist Not Found"
               }
             ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mb-8", style: { color: textColor, opacity: 0.7 }, children: "The artwork you're looking for doesn't exist." }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mb-8", style: { color: textColor, opacity: 0.7 }, children: "The artist you're looking for doesn't exist." }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs(
               Button,
               {
@@ -138,7 +132,7 @@ function ArtworkDetailPage() {
               variant: "ghost",
               className: "mb-6",
               style: { color: textColor },
-              "data-ocid": "artwork_detail.back_button",
+              "data-ocid": "artist_detail.back_button",
               children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "mr-2 h-4 w-4" }),
                 "Back to Collection"
@@ -158,18 +152,18 @@ function ArtworkDetailPage() {
                     backgroundColor: `${textColor}08`
                   },
                   onClick: () => setIsLightboxOpen(true),
-                  "data-ocid": "artwork_detail.gallery_image",
+                  "data-ocid": "artist_detail.gallery_image",
                   children: [
                     /* @__PURE__ */ jsxRuntimeExports.jsx(
                       "img",
                       {
                         src: getCurrentImageUrl(),
-                        alt: `${artwork.title} — view ${currentImageIndex + 1}`,
+                        alt: `${artist.name} — view ${currentImageIndex + 1}`,
                         className: "max-h-[600px] w-auto max-w-full object-contain transition-transform duration-500 group-hover:scale-[1.02]",
                         onError: (e) => {
                           const target = e.target;
-                          if (target.src !== defaultArtworkImage)
-                            target.src = defaultArtworkImage;
+                          if (target.src !== defaultArtistImage)
+                            target.src = defaultArtistImage;
                         }
                       }
                     ),
@@ -177,14 +171,6 @@ function ArtworkDetailPage() {
                       /* @__PURE__ */ jsxRuntimeExports.jsx(ZoomIn, { className: "h-4 w-4" }),
                       /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-medium tracking-wide", children: "Expand" })
                     ] }),
-                    artwork.isForSale && currentImageIndex === 0 && /* @__PURE__ */ jsxRuntimeExports.jsx(
-                      Badge,
-                      {
-                        className: "absolute left-4 top-4 text-base px-4 py-2",
-                        style: { backgroundColor: accentColor, color: "#1a1a1a" },
-                        children: "Available for Purchase"
-                      }
-                    ),
                     galleryImages.length > 1 && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
                       /* @__PURE__ */ jsxRuntimeExports.jsx(
                         "button",
@@ -197,7 +183,7 @@ function ArtworkDetailPage() {
                           className: "absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-white/90 p-2 shadow-lg transition-all hover:bg-white hover:scale-110 focus:outline-none",
                           style: { color: accentColor },
                           "aria-label": "Previous image",
-                          "data-ocid": "artwork_detail.gallery_prev",
+                          "data-ocid": "artist_detail.gallery_prev",
                           children: /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronLeft, { className: "h-6 w-6" })
                         }
                       ),
@@ -212,7 +198,7 @@ function ArtworkDetailPage() {
                           className: "absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-white/90 p-2 shadow-lg transition-all hover:bg-white hover:scale-110 focus:outline-none",
                           style: { color: accentColor },
                           "aria-label": "Next image",
-                          "data-ocid": "artwork_detail.gallery_next",
+                          "data-ocid": "artist_detail.gallery_next",
                           children: /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronRight, { className: "h-6 w-6" })
                         }
                       ),
@@ -230,7 +216,7 @@ function ArtworkDetailPage() {
                 {
                   type: "button",
                   onClick: () => setCurrentImageIndex(index),
-                  "data-ocid": `artwork_detail.thumbnail.${index + 1}`,
+                  "data-ocid": `artist_detail.thumbnail.${index + 1}`,
                   className: `flex-shrink-0 overflow-hidden rounded border-2 transition-all focus:outline-none ${index === currentImageIndex ? "" : "opacity-60 hover:opacity-100"}`,
                   style: {
                     borderColor: index === currentImageIndex ? accentColor : "transparent"
@@ -243,8 +229,8 @@ function ArtworkDetailPage() {
                       className: "h-16 w-16 object-cover",
                       onError: (e) => {
                         const target = e.target;
-                        if (target.src !== defaultArtworkImage)
-                          target.src = defaultArtworkImage;
+                        if (target.src !== defaultArtistImage)
+                          target.src = defaultArtistImage;
                       }
                     }
                   )
@@ -259,27 +245,14 @@ function ArtworkDetailPage() {
                   {
                     className: "mb-4 font-serif text-4xl font-light md:text-5xl",
                     style: { color: headerTextColor },
-                    children: artwork.title
+                    children: artist.name
                   }
                 ),
-                artist && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                  "button",
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  Badge,
                   {
-                    type: "button",
-                    onClick: () => navigate({
-                      to: "/artists/$artistId",
-                      params: { artistId: artist.id }
-                    }),
-                    className: "flex items-center gap-2 transition-colors hover:opacity-80",
-                    style: { color: textColor, opacity: 0.7 },
-                    "data-ocid": "artwork_detail.artist_link",
-                    children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "h-5 w-5" }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-lg", children: [
-                        "by ",
-                        artist.name
-                      ] })
-                    ]
+                    style: { backgroundColor: accentColor, color: "#1a1a1a" },
+                    children: "Featured Artist"
                   }
                 )
               ] }),
@@ -294,7 +267,7 @@ function ArtworkDetailPage() {
                       {
                         className: "mb-3 text-xl font-medium",
                         style: { color: headerTextColor },
-                        children: "About This Artwork"
+                        children: "Biography"
                       }
                     ),
                     /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -302,105 +275,65 @@ function ArtworkDetailPage() {
                       {
                         style: { color: textColor, opacity: 0.8 },
                         className: "leading-relaxed",
-                        children: artwork.description
+                        children: artist.bio
                       }
                     )
                   ]
                 }
               ),
-              artwork.isForSale && artwork.price && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "div",
                 {
                   className: "border-t pt-6",
                   style: { borderColor: `${textColor}1a` },
-                  children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(
-                      "h2",
-                      {
-                        className: "mb-3 text-xl font-medium",
-                        style: { color: headerTextColor },
-                        children: "Price"
-                      }
-                    ),
-                    /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                      "p",
-                      {
-                        className: "text-3xl font-light",
-                        style: { color: accentColor },
-                        children: [
-                          "$",
-                          Number(artwork.price).toLocaleString()
-                        ]
-                      }
-                    )
-                  ]
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                "div",
-                {
-                  className: "border-t pt-6 space-y-3",
-                  style: { borderColor: `${textColor}1a` },
-                  children: [
-                    artwork.isForSale && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                      Button,
-                      {
-                        onClick: () => {
-                          window.location.href = "/#contact";
-                        },
-                        className: "w-full",
-                        style: { backgroundColor: accentColor, color: "#1a1a1a" },
-                        "data-ocid": "artwork_detail.inquire_button",
-                        children: [
-                          /* @__PURE__ */ jsxRuntimeExports.jsx(Mail, { className: "mr-2 h-5 w-5" }),
-                          "Inquire About Purchase"
-                        ]
-                      }
-                    ),
-                    artist && /* @__PURE__ */ jsxRuntimeExports.jsx(
-                      Button,
-                      {
-                        onClick: () => navigate({
-                          to: "/artists/$artistId",
-                          params: { artistId: artist.id }
-                        }),
-                        variant: "outline",
-                        className: "w-full",
-                        style: { borderColor: accentColor, color: accentColor },
-                        "data-ocid": "artwork_detail.view_artist_button",
-                        children: "View Artist Profile"
-                      }
-                    )
-                  ]
+                  children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                    Button,
+                    {
+                      onClick: () => {
+                        window.location.href = "/#contact";
+                      },
+                      variant: "outline",
+                      className: "w-full",
+                      style: { borderColor: accentColor, color: accentColor },
+                      "data-ocid": "artist_detail.contact_button",
+                      children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx(Mail, { className: "mr-2 h-5 w-5" }),
+                        "Contact About This Artist"
+                      ]
+                    }
+                  )
                 }
               )
             ] })
           ] }),
-          (relatedArtworks.length > 0 || otherArtworks.length > 0) && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-20", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
+          artistArtworks.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-20", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
               "h2",
               {
                 className: "mb-8 text-center font-serif text-3xl font-light",
                 style: { color: headerTextColor },
-                children: relatedArtworks.length > 0 ? `More by ${artist == null ? void 0 : artist.name}` : "More Artworks"
+                children: [
+                  "Artworks by ",
+                  artist.name
+                ]
               }
             ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid gap-6 sm:grid-cols-2 lg:grid-cols-3", children: (relatedArtworks.length > 0 ? relatedArtworks : otherArtworks).map((relatedArtwork, index) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid gap-6 sm:grid-cols-2 lg:grid-cols-4", children: artistArtworks.map((artwork, index) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
               Card,
               {
-                "data-ocid": `artwork_detail.related.${index + 1}`,
+                "data-ocid": `artist_detail.artwork.${index + 1}`,
                 className: "group overflow-hidden transition-all duration-[400ms] hover:shadow-xl cursor-pointer",
                 onClick: () => navigate({
                   to: "/artworks/$artworkId",
-                  params: { artworkId: relatedArtwork.id }
+                  params: { artworkId: artwork.id }
                 }),
                 children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative aspect-square overflow-hidden", children: [
                     /* @__PURE__ */ jsxRuntimeExports.jsx(
                       "img",
                       {
-                        src: relatedArtwork.photo || defaultArtworkImage,
-                        alt: relatedArtwork.title,
+                        src: getArtworkImage(artwork),
+                        alt: artwork.title,
                         className: "h-full w-full object-cover transition-transform duration-[400ms] group-hover:scale-[1.08]",
                         loading: "lazy",
                         onError: (e) => {
@@ -411,7 +344,7 @@ function ArtworkDetailPage() {
                       }
                     ),
                     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 bg-luxury-gold/10 opacity-0 transition-opacity duration-[400ms] group-hover:opacity-100 pointer-events-none" }),
-                    relatedArtwork.isForSale && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    artwork.isForSale && /* @__PURE__ */ jsxRuntimeExports.jsx(
                       Badge,
                       {
                         className: "absolute right-2 top-2",
@@ -429,7 +362,7 @@ function ArtworkDetailPage() {
                       {
                         className: "mb-1 font-medium",
                         style: { color: headerTextColor },
-                        children: relatedArtwork.title
+                        children: artwork.title
                       }
                     ),
                     /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -437,13 +370,72 @@ function ArtworkDetailPage() {
                       {
                         className: "line-clamp-2 text-sm",
                         style: { color: textColor, opacity: 0.7 },
-                        children: relatedArtwork.description
+                        children: artwork.description
                       }
                     )
                   ] })
                 ]
               },
-              relatedArtwork.id
+              artwork.id
+            )) })
+          ] }),
+          relatedArtists.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-20", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "h2",
+              {
+                className: "mb-8 text-center font-serif text-3xl font-light",
+                style: { color: headerTextColor },
+                children: "More Artists"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid gap-6 md:grid-cols-3", children: relatedArtists.map((relatedArtist, index) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              Card,
+              {
+                "data-ocid": `artist_detail.related.${index + 1}`,
+                className: "group overflow-hidden transition-all duration-[400ms] hover:shadow-xl cursor-pointer",
+                onClick: () => navigate({
+                  to: "/artists/$artistId",
+                  params: { artistId: relatedArtist.id }
+                }),
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative h-48 overflow-hidden", children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "img",
+                      {
+                        src: relatedArtist.photo || defaultArtistImage,
+                        alt: relatedArtist.name,
+                        className: "h-full w-full object-cover transition-transform duration-[400ms] group-hover:scale-[1.08]",
+                        loading: "lazy",
+                        onError: (e) => {
+                          const target = e.target;
+                          if (target.src !== defaultArtistImage)
+                            target.src = defaultArtistImage;
+                        }
+                      }
+                    ),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 bg-luxury-gold/10 opacity-0 transition-opacity duration-[400ms] group-hover:opacity-100 pointer-events-none" })
+                  ] }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs(CardContent, { className: "p-4", children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "h3",
+                      {
+                        className: "mb-2 font-serif text-xl font-light",
+                        style: { color: headerTextColor },
+                        children: relatedArtist.name
+                      }
+                    ),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "p",
+                      {
+                        className: "line-clamp-2 text-sm",
+                        style: { color: textColor, opacity: 0.7 },
+                        children: relatedArtist.bio
+                      }
+                    )
+                  ] })
+                ]
+              },
+              relatedArtist.id
             )) })
           ] })
         ] })
@@ -461,5 +453,5 @@ function ArtworkDetailPage() {
   ] });
 }
 export {
-  ArtworkDetailPage as default
+  ArtistDetailPage as default
 };

@@ -165,6 +165,75 @@ const emptyMarker = {
 
 type MarkerFormState = typeof emptyMarker;
 
+// ─── Geocode lookup — isolated so its loading state never re-renders the
+//     address input (same pattern as ImageUploadArea). ──────────────────────
+function GeocodeLookup({
+  address,
+  onResult,
+}: {
+  address: string;
+  onResult: (lat: number, lng: number) => void;
+}) {
+  const [isGeocoding, setIsGeocoding] = useState(false);
+  const [geocodeError, setGeocodeError] = useState<string | null>(null);
+
+  const handleGeocode = async () => {
+    const q = address.trim();
+    if (!q) {
+      setGeocodeError("Please enter an address first.");
+      return;
+    }
+    setGeocodeError(null);
+    setIsGeocoding(true);
+    try {
+      const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=1`;
+      const res = await fetch(url, {
+        headers: { "User-Agent": "AuraSuites/1.0" },
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = (await res.json()) as Array<{ lat: string; lon: string }>;
+      if (!data.length) {
+        setGeocodeError("No results found. Try a more specific address.");
+        return;
+      }
+      const lat = Math.round(Number.parseFloat(data[0].lat) * 1e6) / 1e6;
+      const lng = Math.round(Number.parseFloat(data[0].lon) * 1e6) / 1e6;
+      onResult(lat, lng);
+      toast.success(`Coordinates found: ${lat}, ${lng}`);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Request failed";
+      setGeocodeError(`Geocoding failed: ${msg}`);
+      toast.error(`Geocoding failed: ${msg}`);
+    } finally {
+      setIsGeocoding(false);
+    }
+  };
+
+  return (
+    <div className="space-y-1">
+      <button
+        type="button"
+        onClick={handleGeocode}
+        disabled={isGeocoding}
+        className="inline-flex items-center gap-2 rounded-md border border-[#e2e5eb] bg-[#f7f8fa] px-3 py-1.5 text-xs font-medium text-[#1a1d23] transition-colors hover:bg-luxury-gold/10 hover:border-luxury-gold/40 disabled:cursor-not-allowed disabled:opacity-60"
+        data-ocid="geocode-find-coordinates"
+      >
+        {isGeocoding ? (
+          <Loader2 className="h-3 w-3 animate-spin" />
+        ) : (
+          <span>📍</span>
+        )}
+        Find Coordinates
+      </button>
+      {geocodeError && (
+        <p className="text-xs font-medium text-red-600 bg-red-50 border border-red-200 rounded px-2 py-1">
+          {geocodeError}
+        </p>
+      )}
+    </div>
+  );
+}
+
 // ─── Extracted at module level — never re-created between renders ─────────
 interface MarkerFormFieldsProps {
   value: MarkerFormState;
@@ -221,6 +290,10 @@ function MarkerFormFields({
           onChange={(e) => onChange({ ...value, address: e.target.value })}
           placeholder="e.g. Thames 2296, Palermo"
           className="border-[#e2e5eb] bg-white text-[#1a1d23] placeholder:text-[#96a0b5]"
+        />
+        <GeocodeLookup
+          address={value.address}
+          onResult={(lat, lng) => onChange({ ...value, lat, lng })}
         />
       </div>
 

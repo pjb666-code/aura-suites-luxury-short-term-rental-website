@@ -18,8 +18,8 @@ var __privateWrapper = (obj, member, setter, getter) => ({
   }
 });
 var _Util_static, getExtremumOnCurve_fn, getExtremum_fn, _regex, _toolbar, _colorPicker, _editor, _buttons, _altText, _l10nRemove, _EditorToolbar_static, pointerDown_fn, _EditorToolbar_instances, focusIn_fn, focusOut_fn, addListenersToElement_fn, addDeleteButton_fn, divider_get, _buttons2, _toolbar2, _uiManager, _HighlightToolbar_instances, render_fn, getLastPoint_fn, addHighlightButton_fn, _id, _baseId, _id2, _cache, _ImageManager_instances, get_fn, _commands, _locked, _maxSize, _position, _KeyboardManager_instances, serialize_fn, _abortController, _activeEditor, _allEditors, _allLayers, _altTextManager, _annotationStorage, _changedExistingAnnotations, _commandManager, _copyPasteAC, _currentPageIndex, _deletedAnnotationsElementIds, _draggingEditors, _editorTypes, _editorsToRescale, _enableHighlightFloatingButton, _enableUpdatedAddImage, _enableNewAltTextWhenAddingImage, _filterFactory, _focusMainContainerTimeoutId, _focusManagerAC, _highlightColors, _highlightWhenShiftUp, _highlightToolbar, _idManager, _isEnabled, _isWaiting, _keyboardManagerAC, _lastActiveElement, _mainHighlightColorPicker, _mlManager, _mode, _selectedEditors, _selectedTextNode, _pageColors, _showAllStates, _previousStates, _translation, _translationTimeoutId, _container, _viewer, _updateModeCapability, _AnnotationEditorUIManager_instances, getAnchorElementForSelection_fn, getLayerForTextLayer_fn, displayHighlightToolbar_fn, selectionChange_fn, onSelectEnd_fn, addSelectionListener_fn, addFocusManager_fn, removeFocusManager_fn, addKeyboardManager_fn, removeKeyboardManager_fn, addCopyPasteListeners_fn, removeCopyPasteListeners_fn, addDragAndDropListeners_fn, dispatchUpdateStates_fn, dispatchUpdateUI_fn, enableAll_fn, disableAll_fn, addEditorToLayer_fn, lastSelectedEditor_get, isEmpty_fn, selectEditors_fn, _altText2, _altTextDecorative, _altTextButton, _altTextButtonLabel, _altTextTooltip, _altTextTooltipTimeout, _altTextWasFromKeyBoard, _badge, _editor2, _guessedText, _textWithDisclaimer, _useNewAltTextFlow, _l10nNewButton, _AltText_instances, label_get, setState_fn, _accessibilityData, _allResizerDivs, _altText3, _disabled, _keepAspectRatio, _resizersDiv, _savedDimensions, _focusAC, _focusedResizerName, _hasBeenClicked, _initialPosition, _isEditing, _isInEditMode, _isResizerEnabledForKeyboard, _moveInDOMTimeout, _prevDragX, _prevDragY, _telemetryTimeouts, _isDraggable, _zIndex, _AnnotationEditor_instances, translate_fn, _AnnotationEditor_static, rotatePoint_fn, getRotationMatrix_fn, createResizers_fn, resizerPointerdown_fn, addResizeToUndoStack_fn, resizerPointermove_fn, selectOnPointerEvent_fn, setUpDragSession_fn, addFocusListeners_fn, resizerKeydown_fn, resizerBlur_fn, resizerFocus_fn, setResizerTabIndex_fn, stopResizing_fn, _modified, _modifiedIds, _storage, _AnnotationStorage_instances, setModified_fn, _serializable, _systemFonts, _enableHWA, _baseUrl, __cache, __defs, _docId, _document, __hcmCache, _id3, _DOMFilterFactory_instances, cache_get, hcmCache_get, defs_get, createTables_fn, createUrl_fn, addLuminosityConversion_fn, addGrayConversion_fn, createFilter_fn, appendFeFunc_fn, addTransferMapConversion_fn, addTransferMapAlphaConversion_fn, getRGB_fn, _CanvasGraphics_instances, restoreInitialState_fn, drawFilter_fn, _port, _src, _messageAC, _MessageHandler_instances, onMessage_fn, createStreamSink_fn, processStreamMessage_fn, deleteStreamController_fn, _metadataMap, _data, _isDisplay, _isPrint, _userSet, _visible, _cachedGetHash, _groups, _initialHash, _order, _OptionalContentConfig_instances, evaluateVisibilityExpression_fn, _a, _capability, _container2, _disableProcessItems, _fontInspectorEnabled, _lang, _layoutTextParams, _pageHeight, _pageWidth, _reader, _rootContainer, _rotation, _scale, _styleCache, _textContentItemsStr, _textContentSource, _textDivs, _textDivProperties, _transform, _b, _ascentCache, _canvasContexts, _canvasCtxFonts, _minFontSize, _pendingTextLayers, _TextLayer_instances, processItems_fn, appendText_fn, layout_fn, _TextLayer_static, getCtx_fn, ensureCtxFont_fn, ensureMinFontSizeComputed_fn, getAscent_fn, _docId2, _delayedCleanupTimeout, _pendingCleanup, _PDFPageProxy_instances, tryCleanup_fn, abortDelayedCleanup_fn, _listeners, _deferred, _fakeWorkerId, _isWorkerDisabled, _workerPorts, _PDFWorker_instances, resolve_fn, _PDFWorker_static, mainThreadWorkerMessageHandler_get, _methodPromises, _pageCache, _pagePromises, _pageRefCache, _passwordCapability, _WorkerTransport_instances, cacheSimpleMethod_fn, _objs, _PDFObjects_instances, ensureObj_fn, _internalRenderTask, _rAF, _canvasInUse, _updates, _hasBorder, _popupElement, _AnnotationElement_instances, setRectEdited_fn, _LinkAnnotationElement_instances, setInternalLink_fn, bindAttachment_fn, bindSetOCGState_fn, _boundKeyDown, _boundHide, _boundShow, _boundToggle, _color, _container3, _contentsObj, _dateObj, _elements, _parent, _parentRect, _pinned, _popup, _position2, _rect, _richText, _titleObj, _updates2, _wasVisible, _PopupElement_instances, html_get, fontSize_get, fontColor_get, makePopupContent_fn, keyDown_fn, setPosition_fn, toggle_fn, show_fn, hide_fn, _line, _square, _circle, _polyline, _polylines, _trigger, _FileAttachmentAnnotationElement_instances, download_fn, _accessibilityManager, _annotationCanvasMap, _editableAnnotations, _structTreeLayer, _AnnotationLayer_instances, appendElement_fn, setAnnotationCanvasMap_fn, _c, _color2, _content, _editorDivId, _editModeAC, _fontSize, _FreeTextEditor_instances, updateFontSize_fn, updateColor_fn, extractText_fn, setEditorDimensions_fn, _FreeTextEditor_static, getNodeContent_fn, setContent_fn, serializeContent_fn, deserializeContent_fn, hasElementChanged_fn, _box, _bottom, _innerMargin, _isLTR, _top, _last, _lastX, _lastY, _min, _min_dist, _scaleFactor, _thickness, _points, _MIN_DIST, _MIN_DIFF, _MIN, _FreeDrawOutliner_instances, getLastCoords_fn, toSVGPathTwoPoints_fn, toSVGPathStart_fn, toSVGPathEnd_fn, getOutlineTwoPoints_fn, getOutlineStart_fn, getOutlineEnd_fn, _box2, _bbox, _innerMargin2, _isLTR2, _points2, _scaleFactor2, _outline, _FreeDrawOutline_instances, rescale_fn, rescaleAndSwap_fn, computeMinMax_fn, _box3, _verticalEdges, _intervals, _HighlightOutliner_instances, getOutlines_fn, binarySearch_fn, insert_fn, remove_fn, breakEdge_fn, _box4, _outlines, _button, _buttonSwatch, _defaultColor, _dropdown, _dropdownWasFromKeyboard, _isMainColorPicker, _editor3, _eventBus, _openDropdownAC, _uiManager2, _type, _l10nColor, _ColorPicker_instances, getDropdownRoot_fn, colorSelect_fn, keyDown_fn2, openDropdown_fn, pointerDown_fn2, isDropdownVisible_get, _anchorNode, _anchorOffset, _boxes, _clipPathId, _colorPicker2, _focusOutlines, _focusNode, _focusOffset, _highlightDiv, _highlightOutlines, _id4, _isFreeHighlight, _lastPoint, _opacity, _outlineId, _text, _thickness2, _methodOfCreation, _HighlightEditor_instances, createOutlines_fn, createFreeOutlines_fn, updateColor_fn2, updateThickness_fn, changeThickness_fn, cleanDrawLayer_fn, addToDrawLayer_fn, _HighlightEditor_static, rotateBbox_fn, keydown_fn, setCaret_fn, getRotation_fn, serializeBoxes_fn, serializeOutlines_fn, highlightMove_fn, endHighlight_fn, hasElementChanged_fn2, _baseHeight, _baseWidth, _canvasContextMenuTimeoutId, _currentPath2D, _disableEditing, _drawingAC, _hasSomethingToDraw, _isCanvasInitialized, _observer, _pointerdownAC, _realWidth, _realHeight, _requestFrameCallback, _InkEditor_instances, updateThickness_fn2, updateColor_fn3, updateOpacity_fn, getInitialBBox_fn, setStroke_fn, startDrawing_fn, draw_fn, endPath_fn, stopDrawing_fn, drawPoints_fn, makeBezierCurve_fn, generateBezierPoints_fn, redraw_fn, addPointerdownListener_fn, removePointerdownListener_fn, endDrawing_fn, createCanvas_fn, createObserver_fn, setCanvasDims_fn, setScaleFactor_fn, updateTransform_fn, _InkEditor_static, buildPath2D_fn, toPDFCoordinates_fn, fromPDFCoordinates_fn, serializePaths_fn, getBbox_fn, getPadding_fn, fitToContent_fn, _bitmap, _bitmapId, _bitmapPromise, _bitmapUrl, _bitmapFile, _bitmapFileName, _canvas, _observer2, _resizeTimeoutId, _isSvg, _hasBeenAddedInUndoStack, _StampEditor_instances, getBitmapFetched_fn, getBitmapDone_fn, getBitmap_fn, createCanvas_fn2, setDimensions_fn, scaleBitmap_fn, drawBitmap_fn, serializeBitmap_fn, createObserver_fn2, hasElementChanged_fn3, _accessibilityManager2, _allowClick, _annotationLayer, _clickAC, _editorFocusTimeoutId, _editors, _hadPointerDown, _isCleaningUp, _isDisabling, _textLayer, _textSelectionAC, _uiManager3, _editorTypes2, _AnnotationEditorLayer_instances, textLayerPointerDown_fn, currentEditorType_get, createNewEditor_fn, getCenterPoint_fn, cleanup_fn, _parent2, _id5, _mapping, _toUpdate, _DrawLayer_static, setBox_fn, _DrawLayer_instances, createSVG_fn, createClipPath_fn;
-import { m as createLucideIcon, q as frame, s as cancelFrame, t as interpolate, v as supportsViewTimeline, w as supportsScrollTimeline, x as progress, y as velocityPerSecond, z as isHTMLElement, D as defaultOffset$1, G as clamp, J as noop, K as resize, L as frameData, N as useConstant, r as reactExports, O as useIsomorphicLayoutEffect, P as invariant, Q as motionValue, R as MotionConfigContext, S as collectMotionValues, U as commonjsGlobal, V as getDefaultExportFromCjs, W as React, Y as reactDomExports, _ as __vitePreload, j as jsxRuntimeExports, Z as invariant$1, $ as clsx, b as useLiveSiteConfig, a0 as useListLiveMapMarkers, a1 as useListLiveCityGuideEntries, a2 as useListLiveExclusiveServices, a3 as useReducedMotion, a4 as useFileUrl, H as Header, p as motion, a5 as Sparkles, a6 as Utensils, a7 as Music, M as MapPin, a8 as Heart, a9 as Star, F as Footer, aa as ChevronDown, n as ChevronRight, ab as BookOpen, ac as Compass, ad as Palette, E as ExternalLink, ae as LoaderCircle, B as Badge, d as Button } from "./index-BRLY7AmW.js";
-import { A as AnimatePresence, C as ChevronLeft } from "./index-B39T_luR.js";
+import { m as createLucideIcon, q as frame, s as cancelFrame, t as interpolate, v as supportsViewTimeline, w as supportsScrollTimeline, x as progress, y as velocityPerSecond, z as isHTMLElement, D as defaultOffset$1, G as clamp, J as noop, K as resize, L as frameData, N as useConstant, r as reactExports, O as useIsomorphicLayoutEffect, P as invariant, Q as motionValue, R as MotionConfigContext, S as collectMotionValues, U as getDefaultExportFromCjs, V as commonjsGlobal, W as reactDomExports, Y as React, _ as __vitePreload, j as jsxRuntimeExports, Z as invariant$1, $ as clsx, b as useLiveSiteConfig, a0 as useListLiveMapMarkers, a1 as useListLiveCityGuideEntries, a2 as useListLiveExclusiveServices, a3 as useReducedMotion, a4 as useFileUrl, H as Header, p as motion, a5 as Sparkles, a6 as Utensils, a7 as Music, M as MapPin, a8 as Heart, a9 as Star, F as Footer, aa as ChevronDown, n as ChevronRight, ab as BookOpen, ac as Compass, ad as Palette, E as ExternalLink, ae as LoaderCircle, B as Badge, d as Button } from "./index-BAUmy9hG.js";
+import { A as AnimatePresence, C as ChevronLeft } from "./index-shJDc2OG.js";
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -5650,7 +5650,7 @@ var leafletSrc = { exports: {} };
         this._marker.fire("moveend").fire("dragend", e);
       }
     });
-    var Marker = Layer.extend({
+    var Marker2 = Layer.extend({
       // @section
       // @aka Marker options
       options: {
@@ -5948,7 +5948,7 @@ var leafletSrc = { exports: {} };
       }
     });
     function marker(latlng, options) {
-      return new Marker(latlng, options);
+      return new Marker2(latlng, options);
     }
     var Path = Layer.extend({
       // @section
@@ -6618,7 +6618,7 @@ var leafletSrc = { exports: {} };
       }
     }
     function _pointToLayer(pointToLayerFn, geojson, latlng, options) {
-      return pointToLayerFn ? pointToLayerFn(geojson, latlng) : new Marker(latlng, options && options.markersInheritOptions && options);
+      return pointToLayerFn ? pointToLayerFn(geojson, latlng) : new Marker2(latlng, options && options.markersInheritOptions && options);
     }
     function coordsToLatLng(coords) {
       return new LatLng(coords[1], coords[0], coords[2]);
@@ -6666,7 +6666,7 @@ var leafletSrc = { exports: {} };
         });
       }
     };
-    Marker.include(PointToGeoJSON);
+    Marker2.include(PointToGeoJSON);
     Circle.include(PointToGeoJSON);
     CircleMarker2.include(PointToGeoJSON);
     Polyline.include({
@@ -10209,7 +10209,7 @@ var leafletSrc = { exports: {} };
     exports$12.LayerGroup = LayerGroup;
     exports$12.LineUtil = LineUtil;
     exports$12.Map = Map2;
-    exports$12.Marker = Marker;
+    exports$12.Marker = Marker2;
     exports$12.Mixin = Mixin;
     exports$12.Path = Path;
     exports$12.Point = Point;
@@ -10470,6 +10470,11 @@ function createPathHook(useElement) {
     return elementRef;
   };
 }
+function createLayerComponent(createElement, updateElement) {
+  const useElement = createElementHook(createElement, updateElement);
+  const useLayer = createLayerHook(useElement);
+  return createContainerComponent(useLayer);
+}
 function createOverlayComponent(createElement, useLifecycle) {
   const useElement = createElementHook(createElement);
   const useOverlay = createDivOverlayHook(useElement, useLifecycle);
@@ -10542,6 +10547,32 @@ function MapContainerComponent({ bounds, boundsOptions, center, children, classN
   }, contents);
 }
 const MapContainer = /* @__PURE__ */ reactExports.forwardRef(MapContainerComponent);
+const Marker = createLayerComponent(function createMarker({ position, ...options }, ctx) {
+  const marker = new leafletSrcExports.Marker(position, options);
+  return createElementObject(marker, extendContext(ctx, {
+    overlayContainer: marker
+  }));
+}, function updateMarker(marker, props, prevProps) {
+  if (props.position !== prevProps.position) {
+    marker.setLatLng(props.position);
+  }
+  if (props.icon != null && props.icon !== prevProps.icon) {
+    marker.setIcon(props.icon);
+  }
+  if (props.zIndexOffset != null && props.zIndexOffset !== prevProps.zIndexOffset) {
+    marker.setZIndexOffset(props.zIndexOffset);
+  }
+  if (props.opacity != null && props.opacity !== prevProps.opacity) {
+    marker.setOpacity(props.opacity);
+  }
+  if (marker.dragging != null && props.draggable !== prevProps.draggable) {
+    if (props.draggable === true) {
+      marker.dragging.enable();
+    } else {
+      marker.dragging.disable();
+    }
+  }
+});
 const Popup = createOverlayComponent(function createPopup(props, context) {
   const popup = new leafletSrcExports.Popup(props, context.overlayContainer);
   return createElementObject(popup, context);
@@ -33163,6 +33194,89 @@ function ParallaxPanel({
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative z-10", children })
   ] });
 }
+function MarkerImageResolver({
+  marker,
+  position,
+  categoryColor
+}) {
+  const { data: imageUrl } = useFileUrl(marker.imageKey ?? "");
+  const popup = /* @__PURE__ */ jsxRuntimeExports.jsxs(Popup, { children: [
+    imageUrl && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "img",
+      {
+        src: imageUrl,
+        alt: marker.name,
+        style: {
+          width: 120,
+          height: 80,
+          objectFit: "cover",
+          borderRadius: 6,
+          marginBottom: 6
+        }
+      }
+    ),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("strong", { children: marker.name }),
+    marker.address && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("br", {}),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("em", { style: { fontSize: "0.85em" }, children: marker.address })
+    ] }),
+    marker.website && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("br", {}),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "a",
+        {
+          href: marker.website,
+          target: "_blank",
+          rel: "noopener noreferrer",
+          style: { fontSize: "0.85em", color: categoryColor },
+          children: "Visit website"
+        }
+      )
+    ] })
+  ] });
+  if (imageUrl) {
+    const icon = L$1.divIcon({
+      html: `<div style="width:40px;height:40px;border-radius:50%;border:2px solid ${categoryColor};background-image:url(${imageUrl});background-size:cover;background-position:center;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,0.3);"></div>`,
+      iconSize: [40, 40],
+      iconAnchor: [20, 20],
+      className: ""
+    });
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(Marker, { position, icon, children: popup });
+  }
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    CircleMarker,
+    {
+      center: position,
+      radius: 10,
+      pathOptions: {
+        color: categoryColor,
+        fillColor: categoryColor,
+        fillOpacity: 0.8,
+        weight: 2
+      },
+      children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Popup, { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("strong", { children: marker.name }),
+        marker.address && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("br", {}),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("em", { style: { fontSize: "0.85em" }, children: marker.address })
+        ] }),
+        marker.website && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("br", {}),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "a",
+            {
+              href: marker.website,
+              target: "_blank",
+              rel: "noopener noreferrer",
+              style: { fontSize: "0.85em", color: categoryColor },
+              children: "Visit website"
+            }
+          )
+        ] })
+      ] })
+    }
+  );
+}
 function MapSection({
   markers,
   accentColor,
@@ -33237,8 +33351,8 @@ function MapSection({
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { height: "500px", width: "100%" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
           MapContainer,
           {
-            center: [-34.6037, -58.3816],
-            zoom: 14,
+            center: [-34.595, -58.42],
+            zoom: 13,
             style: { height: "500px", width: "100%" },
             scrollWheelZoom: false,
             children: [
@@ -33252,27 +33366,11 @@ function MapSection({
               visibleMarkers.map((marker) => {
                 const color = categoryColorMap[marker.category] ?? accentColor;
                 return /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  CircleMarker,
+                  MarkerImageResolver,
                   {
-                    center: [marker.lat, marker.lng],
-                    radius: 10,
-                    pathOptions: {
-                      color,
-                      fillColor: color,
-                      fillOpacity: 0.8,
-                      weight: 2
-                    },
-                    children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Popup, { children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("strong", { children: marker.name }),
-                      marker.description && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                        /* @__PURE__ */ jsxRuntimeExports.jsx("br", {}),
-                        marker.description
-                      ] }),
-                      marker.address && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                        /* @__PURE__ */ jsxRuntimeExports.jsx("br", {}),
-                        /* @__PURE__ */ jsxRuntimeExports.jsx("em", { children: marker.address })
-                      ] })
-                    ] })
+                    marker,
+                    position: [marker.lat, marker.lng],
+                    categoryColor: color
                   },
                   marker.id
                 );

@@ -1,12 +1,12 @@
-import { ai as useLiveImprintPage, j as jsxRuntimeExports, ae as LoaderCircle, H as Header, aj as Link, F as Footer } from "./index-BRLY7AmW.js";
-import { A as ArrowLeft } from "./arrow-left-DMCjJGpw.js";
-function ImprintPage() {
-  const { data: imprintPage, isLoading } = useLiveImprintPage();
+import { al as useLiveTermsPage, j as jsxRuntimeExports, ae as LoaderCircle, H as Header, aj as Link, F as Footer } from "./index-BAUmy9hG.js";
+import { A as ArrowLeft } from "./arrow-left-CAdCZxYj.js";
+function TermsPage() {
+  const { data: termsPage, isLoading } = useLiveTermsPage();
   if (isLoading) {
     return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex min-h-screen items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "h-8 w-8 animate-spin text-luxury-gold" }) });
   }
-  const backgroundColor = (imprintPage == null ? void 0 : imprintPage.backgroundColor) || "#FFFFFF";
-  const textColor = (imprintPage == null ? void 0 : imprintPage.textColor) || "#000000";
+  const backgroundColor = (termsPage == null ? void 0 : termsPage.backgroundColor) || "#FFFFFF";
+  const textColor = (termsPage == null ? void 0 : termsPage.textColor) || "#000000";
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen", style: { backgroundColor }, children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(Header, {}),
     /* @__PURE__ */ jsxRuntimeExports.jsx("main", { className: "container mx-auto px-4 py-16", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("article", { className: "mx-auto max-w-4xl", children: [
@@ -16,7 +16,7 @@ function ImprintPage() {
           to: "/",
           className: "mb-8 inline-flex items-center gap-2 text-sm opacity-60 transition-opacity hover:opacity-100",
           style: { color: textColor },
-          "data-ocid": "imprint-back-home",
+          "data-ocid": "terms-back-home",
           children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "h-4 w-4" }),
             "Back to Home"
@@ -28,15 +28,15 @@ function ImprintPage() {
         {
           className: "mb-8 mt-6 font-serif text-4xl font-light md:text-5xl",
           style: { color: textColor },
-          children: (imprintPage == null ? void 0 : imprintPage.title) || "Imprint"
+          children: (termsPage == null ? void 0 : termsPage.title) || "Terms & Conditions"
         }
       ),
-      (imprintPage == null ? void 0 : imprintPage.content) ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+      (termsPage == null ? void 0 : termsPage.content) ? /* @__PURE__ */ jsxRuntimeExports.jsx(
         "div",
         {
           className: "prose prose-lg max-w-none",
           style: { color: textColor },
-          children: imprintPage.content.split("\n").map((paragraph) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+          children: termsPage.content.split("\n").map((paragraph) => /* @__PURE__ */ jsxRuntimeExports.jsx(
             "p",
             {
               className: "mb-4 leading-relaxed",
@@ -46,16 +46,16 @@ function ImprintPage() {
           ))
         }
       ) : /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-lg opacity-60", style: { color: textColor }, children: [
-        "Imprint information has not been added yet. Please check back later or contact us at",
+        "Terms & Conditions have not been added yet. Please check back later or contact us at",
         " ",
         /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "mailto:contact@aurasuites.info", className: "underline", children: "contact@aurasuites.info" }),
         "."
       ] }),
-      (imprintPage == null ? void 0 : imprintPage.lastUpdated) && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "mt-8 text-sm opacity-70", style: { color: textColor }, children: [
+      (termsPage == null ? void 0 : termsPage.lastUpdated) && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "mt-8 text-sm opacity-70", style: { color: textColor }, children: [
         "Last updated:",
         " ",
         new Date(
-          Number(imprintPage.lastUpdated) / 1e6
+          Number(termsPage.lastUpdated) / 1e6
         ).toLocaleDateString()
       ] })
     ] }) }),
@@ -63,5 +63,5 @@ function ImprintPage() {
   ] });
 }
 export {
-  ImprintPage as default
+  TermsPage as default
 };

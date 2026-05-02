@@ -14,7 +14,7 @@ import MixinAuthorization "mo:caffeineai-authorization/MixinAuthorization";
 
 
 
-actor AuraSuites {
+persistent actor AuraSuites {
 
   // ── Types ──────────────────────────────────────────────────────────────────
 
